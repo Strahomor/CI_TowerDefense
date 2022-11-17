@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EndPoints : MonoBehaviour
+public class EndPoints : GameManager
 {
     public static Transform[] endpoints;
 

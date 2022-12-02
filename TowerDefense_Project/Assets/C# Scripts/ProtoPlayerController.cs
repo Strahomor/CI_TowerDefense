@@ -19,6 +19,7 @@ public class ProtoPlayerController : MonoBehaviour
 
     private bool Collided = false;
     private bool Exited = false;
+    private bool BuildMode = false;
     private int counter = 0;
 
     public float x_min = -486.90f;
@@ -39,6 +40,7 @@ public class ProtoPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        #region Movement
         if (!Collided)
         {
             horizontalInput = Input.GetAxis("Horizontal");
@@ -82,6 +84,30 @@ public class ProtoPlayerController : MonoBehaviour
                 Collided = false;
                 Exited = false;
                 counter = 0;
+            }
+        }
+        #endregion
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            BuildMode = !(BuildMode);
+        }
+
+        if (BuildMode)
+        {
+            Vector3 up = transform.TransformDirection(Vector3.up);
+            RaycastHit hit;
+            Ray ray = new Ray(transform.position, -(transform.up));
+            if(Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.position.y <=20.0f)
+                {
+                    Debug.Log("Buildable area");
+                }
+                else
+                {
+                    Debug.Log("Area not usable");
+                }
             }
         }
     }

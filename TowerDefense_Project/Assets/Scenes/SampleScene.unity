@@ -205,6 +205,7 @@ MonoBehaviour:
   EnemyToSpawn: 0
   SpawnPoints: []
   Enemies: []
+  Towers: []
   TimeInterval: 1
   DelayTime: 2
 --- !u!4 &467467252
@@ -229,6 +230,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8993147799608431702, guid: 07a8155de49fe0b4cb5cea6b0c28aa6b, type: 3}
+      propertyPath: m_TagString
+      value: Collidable
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07a8155de49fe0b4cb5cea6b0c28aa6b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -496,6 +501,24 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1 &1439110297 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8993147799608431702, guid: 07a8155de49fe0b4cb5cea6b0c28aa6b, type: 3}
+  m_PrefabInstance: {fileID: 500931141}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1439110302
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439110297}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1463.641, y: 0, z: 1369.9453}
+  m_Center: {x: 0, y: -13.442051, z: 28.018799}
 --- !u!1 &1558014782 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4526599558329214288, guid: 07a8155de49fe0b4cb5cea6b0c28aa6b, type: 3}
@@ -538,8 +561,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.444923, y: 2.3563092, z: 2.4212382}
-  m_Center: {x: -0.70933676, y: -0.4583031, z: 6.6837387}
+  m_Size: {x: 2.444923, y: 2.3563092, z: 2.2768111}
+  m_Center: {x: -0.7093367, y: -0.4583031, z: 6.7559505}
 --- !u!65 &1558014787
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -564,8 +587,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10.196595, y: 5.052177, z: 1.6637789}
-  m_Center: {x: 0.40305877, y: -1.5437876, z: 8.671944}
+  m_Size: {x: 10.196595, y: 4.8641715, z: 1.4546883}
+  m_Center: {x: 0.40305877, y: -1.6377891, z: 8.567401}
 --- !u!54 &1558014790
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -689,6 +712,9 @@ MonoBehaviour:
   z_max: 630
   speed: 150
   flightspeed: 200
+  rotationz: 0
+  rotationy: 0
+  GameManager: {fileID: 0}
 --- !u!1001 &1456871632665276256
 PrefabInstance:
   m_ObjectHideFlags: 0

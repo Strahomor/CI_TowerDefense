@@ -9,9 +9,11 @@ public class GameManager : MonoBehaviour
     public List<GameObject> SpawnPoints;
     public List<GameObject> Enemies;
     public List<GameObject> Towers;
+    public List<GameObject> InstantiatedTowers;
 
     public float TimeInterval = 1;
     public float DelayTime = 2;
+    private Vector3 ObjectDump = new Vector3(999.0f, 999.0f, 999.0f);
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +21,13 @@ public class GameManager : MonoBehaviour
         //InvokeRepeating("SpawnEnemy", DelayTime, TimeInterval);
         Object[] prefabscollection = Resources.LoadAll("Prefabs/Towers/" );
         foreach (GameObject prefab in prefabscollection) { GameObject lo = (GameObject)prefab; Towers.Add(lo); }
+
+        for (int i = 0; i < Towers.Count; i++)
+        {
+            GameObject ogTower = Instantiate(Towers[i], ObjectDump, Quaternion.identity);
+            InstantiatedTowers.Add(ogTower);
+            Debug.Log("Instantiated tower ");
+        }
     }
 
     // Update is called once per frame
@@ -36,6 +45,6 @@ public class GameManager : MonoBehaviour
     public void SpawnTower(int Chooser, Vector3 SpawnPos)
     
     {
-        GameObject towerClone = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
+        GameObject towerClone = Instantiate(InstantiatedTowers[Chooser], SpawnPos, Quaternion.identity);//Towers[Chooser].transform.rotation);
     }
 }

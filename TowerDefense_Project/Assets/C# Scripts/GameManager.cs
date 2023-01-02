@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //InvokeRepeating("SpawnEnemy", DelayTime, TimeInterval);
         Object[] prefabscollection = Resources.LoadAll("Prefabs/Towers/" );
         foreach (GameObject prefab in prefabscollection) { GameObject lo = (GameObject)prefab; Towers.Add(lo); }
 
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour
         {
             GameObject ogTower = Instantiate(Towers[i], ObjectDump, Quaternion.identity);
             InstantiatedTowers.Add(ogTower);
-            Debug.Log("Instantiated tower ");
+            //Debug.Log("Instantiated tower");
         }
     }
 
@@ -45,6 +44,6 @@ public class GameManager : MonoBehaviour
     public void SpawnTower(int Chooser, Vector3 SpawnPos)
     
     {
-        GameObject towerClone = Instantiate(InstantiatedTowers[Chooser], SpawnPos, Quaternion.identity);//Towers[Chooser].transform.rotation);
+        GameObject towerClone = Instantiate(InstantiatedTowers[Chooser], SpawnPos, InstantiatedTowers[Chooser].transform.rotation);
     }
 }

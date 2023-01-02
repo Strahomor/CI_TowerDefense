@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5953714652703658560}
   - component: {fileID: 7888041768000544246}
   - component: {fileID: 3391591895658344428}
+  - component: {fileID: 2607476473115147091}
+  - component: {fileID: 995966600314639322}
   m_Layer: 0
   m_Name: Towers_pCylinder1
   m_TagString: Untagged
@@ -84,3 +86,32 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &2607476473115147091
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3966646386711490634}
+  serializedVersion: 2
+  m_Mass: 1e+9
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!65 &995966600314639322
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3966646386711490634}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.7913756, y: 9.189441, z: 5.0154862}
+  m_Center: {x: -0.0000011920931, y: 0, z: -0.00000035762795}

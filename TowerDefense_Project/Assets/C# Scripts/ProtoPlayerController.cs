@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ProtoPlayerController : MonoBehaviour
 {
-    private float horizontalInput;
-    private float verticalInput;
+    public float horizontalInput;
+    public float verticalInput;
     private float upInput;
     Vector3 previouspos;
     Vector3 currentpos;
@@ -26,11 +26,11 @@ public class ProtoPlayerController : MonoBehaviour
     private string Dick;
 
     public float x_min = -486.90f;
-    public float x_max = 850.0f;
+    public float x_max = 820.0f;
     public float y_min = 30.0f;
     public float y_max = 275.0f;
     public float z_min = -295.0f;
-    public float z_max = 630.0f;
+    public float z_max = 550.0f;
 
     public float speed = 150.0f;
     public float flightspeed = 200.0f;
@@ -52,6 +52,10 @@ public class ProtoPlayerController : MonoBehaviour
         //{
         //    TowerSpawner.Add(GameManager.Towers[i]);
         //}
+        if (GameManager == null)
+        {
+            GameManager = FindObjectOfType<GameManager>();
+        }
 
     }
     // Update is called once per frame
@@ -117,6 +121,40 @@ public class ProtoPlayerController : MonoBehaviour
                 counter = 0;
             }
         }
+
+        
+        if ((counter % 2 == 0) && (!(Collided)))
+        {
+            previouspos = transform.position;
+        }
+        currentpos = transform.position;
+
+        if (transform.position.x < x_min)
+        {
+            transform.position = new Vector3(x_min, transform.position.y, transform.position.z);
+        }
+        if (transform.position.x > x_max)
+        {
+            transform.position = new Vector3(x_max, transform.position.y, transform.position.z);
+        }
+
+        if (transform.position.y < y_min)
+        {
+            transform.position = new Vector3(transform.position.x, y_min, transform.position.z);
+        }
+        if (transform.position.y > y_max)
+        {
+            transform.position = new Vector3(transform.position.x, y_max, transform.position.z);
+        }
+
+        if (transform.position.z < z_min)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, z_min);
+        }
+        if (transform.position.z > z_max)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, z_max);
+        }
         #endregion
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -137,22 +175,22 @@ public class ProtoPlayerController : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.Alpha1))
                     {
                         Selected = 0;
-                        GameManager.SpawnTower(Selected, hit.point);
+                        GameManager.SpawnTower(Selected, transform.position);
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha2))
                     {
                         Selected = 3;
-                        GameManager.SpawnTower(Selected, hit.point);
+                        GameManager.SpawnTower(Selected, transform.position);
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha3))
                     {
                         Selected = 6;
-                        GameManager.SpawnTower(Selected, hit.point);
+                        GameManager.SpawnTower(Selected, transform.position);
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha4))
                     {
                         Selected = 9;
-                        GameManager.SpawnTower(Selected, hit.point);
+                        GameManager.SpawnTower(Selected, transform.position);
                     }
                     //Debug.Log(Selected);
                 }

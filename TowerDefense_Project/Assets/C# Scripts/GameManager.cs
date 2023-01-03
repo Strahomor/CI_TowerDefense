@@ -40,10 +40,27 @@ public class GameManager : MonoBehaviour
         EnemyToSpawn = Random.Range(0, SpawnPoints.Count);
         Vector3 SpawnPosition = new Vector3(SpawnPoints[EnemyToSpawn].transform.position.x, SpawnPoints[EnemyToSpawn].transform.position.y, SpawnPoints[EnemyToSpawn].transform.position.z);
         GameObject enemyclone = Instantiate(Enemies[EnemyToSpawn], SpawnPosition , Enemies[EnemyToSpawn].transform.rotation);
+    
     }
     public void SpawnTower(int Chooser, Vector3 SpawnPos)
     
     {
-        GameObject towerClone = Instantiate(InstantiatedTowers[Chooser], SpawnPos, InstantiatedTowers[Chooser].transform.rotation);
+        GameObject towerClone = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
+        switch (Chooser)
+        {
+            case 0:
+                towerClone.tag = "Science"; 
+                break;
+            case 3:
+                towerClone.tag = "Tech";
+                break;
+            case 6:
+                towerClone.tag = "Engineering";
+                break;
+            case 9:
+                towerClone.tag = "Math";
+                break;
+        }
+        towerClone.AddComponent<TowerController>();
     }
 }

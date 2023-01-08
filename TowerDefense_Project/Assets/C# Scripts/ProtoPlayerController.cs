@@ -167,30 +167,31 @@ public class ProtoPlayerController : MonoBehaviour
             Vector3 up = transform.TransformDirection(Vector3.up);
             RaycastHit hit;
             Ray ray = new Ray(transform.position, -(transform.up));
-            if(Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit))
             {
+                Vector3 TowerPos = new Vector3(hit.point.x + 20.0f, hit.point.y, hit.point.z);
                 if (hit.point.y <=20.0f)
                 {
                     //Debug.Log("Buildable area");
                     if (Input.GetKeyDown(KeyCode.Alpha1))
                     {
                         Selected = 0;
-                        GameManager.SpawnTower(Selected, transform.position);
+                        GameManager.SpawnTower(Selected, TowerPos);
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha2))
                     {
                         Selected = 3;
-                        GameManager.SpawnTower(Selected, transform.position);
+                        GameManager.SpawnTower(Selected, TowerPos);
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha3))
                     {
                         Selected = 6;
-                        GameManager.SpawnTower(Selected, transform.position);
+                        GameManager.SpawnTower(Selected, TowerPos);
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha4))
                     {
                         Selected = 9;
-                        GameManager.SpawnTower(Selected, transform.position);
+                        GameManager.SpawnTower(Selected, TowerPos);
                     }
                     //Debug.Log(Selected);
                 }

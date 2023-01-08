@@ -23,6 +23,8 @@ public class TowerController : MonoBehaviour
 
     MeshFilter currentMesh;
     MeshRenderer currentRenderer;
+
+    public MeshFilter[] TowerMeshes;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +46,7 @@ public class TowerController : MonoBehaviour
                 StartingMeshIndex = 9;
                 break;
         }
+
         if (GameManager == null)
         {
             GameManager = FindObjectOfType<GameManager>();
@@ -51,16 +54,17 @@ public class TowerController : MonoBehaviour
 
         CurrentMesh = gameObject;
 
-        // Update is called once per frame
-
+        TowerMeshes = new MeshFilter[GameManager.Towers.Count]; 
+        for (int i = 0; i<TowerMeshes.Length; i++)
+        {
+            TowerMeshes[i] = GameManager.Towers[i].GetComponent<MeshFilter>();
+        }
     }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
             LevelUp();
-            //Debug.Log(lvl);
-            Debug.Log(CurrentMeshName);
         }
     }
 
@@ -90,22 +94,12 @@ public class TowerController : MonoBehaviour
     {
         if ((lvl % 5 == 0) && (lvl / 5 < 3))
         {
-
-            //CurrentMeshName = currentMesh.name;
-            //Debug.Log(CurrentMesh);
-            //NextMeshNumber = CurrentMeshName.Substring(CurrentMeshName.Length - 1)[0]; //Debug.Log(NextMeshNumber);
-            //NextMeshNumberInt = NextMeshNumber - '0' + 1; //Debug.Log(NextMeshNumberInt);
-            //NextMeshNumber = System.Convert.ToChar(NextMeshNumberInt);
-            //NextMeshNumberString = NextMeshNumber.ToString();
-            //NextMeshName = CurrentMeshName.Remove(CurrentMeshName[-1]); NextMeshName.Insert(-1, NextMeshNumberString);
-
             currentMesh = CurrentMesh.GetComponent<MeshFilter>();
             currentRenderer = CurrentMesh.GetComponent<MeshRenderer>();
-            NextMeshName = GameManager.Towers[StartingMeshIndex + lvl / 5].GetComponent<MeshFilter>().name;
-            NextRendererName = GameManager.Towers[StartingMeshIndex + lvl / 5].GetComponent<MeshRenderer>().name; ;
-
-            currentMesh.sharedMesh = Resources.Load<Mesh>(NextMeshName);
+            currentMesh.sharedMesh = TowerMeshes[StartingMeshIndex + 1].sharedMesh;
             currentRenderer = GameManager.Towers[StartingMeshIndex + lvl / 5].GetComponent<MeshRenderer>();
+            StartingMeshIndex += 1;
+
         }
     }
 }

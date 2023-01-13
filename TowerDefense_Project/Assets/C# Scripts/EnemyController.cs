@@ -10,6 +10,8 @@ public class EnemyController : GameManager
     private Transform roaming;
     private int endpointsindex;
     private int waypointIndex = 0;
+    private int spawnerIndex = 0;
+
     private List<int> UsedIndexes = new List<int>();
 
     void Start()

@@ -41,9 +41,11 @@ public class CameraController : MonoBehaviour
         if (hInput < 0) { direction1 = (-(Vector3.right)); } else if (hInput > 0) { direction2 = (Vector3.right); }
         if (vInput < 0) { direction1 = (-(Vector3.up)); } else if (vInput > 0) { direction2 = (Vector3.up); }
 
+        //transform.position = new Vector3(Playa.transform.position.x, transform.position.y, Playa.transform.position.z);
+
         if (((Playa.transform.position.x < cam_x_move_min) && (Playa.transform.position.x > cam_x_min)) || (((Playa.transform.position.x > cam_x_move_max)) && (Playa.transform.position.x < cam_x_max))) { transform.Translate(Vector3.right * hInput * Time.deltaTime * sped); }
         if (((Playa.transform.position.z < cam_z_move_min) && (Playa.transform.position.z > cam_z_min)) || ((Playa.transform.position.z > cam_z_move_max) && (Playa.transform.position.z < cam_z_max))) { transform.Translate(Vector3.up * vInput * Time.deltaTime * sped); }
-        
+
 
     }
 }

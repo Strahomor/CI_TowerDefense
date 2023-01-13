@@ -6,6 +6,10 @@ public class TowerController : MonoBehaviour
 {
     private int lvl;
     private float xp;
+    private float xptreshhold = 5;
+    private float treshholdvar = 0;
+    private float basedmg;
+
     private string taggeroonskie;
     public GameManager GameManager;
 
@@ -62,9 +66,10 @@ public class TowerController : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (xp >= xptreshhold)
         {
-            LevelUp();
+            LevelUp(); 
+
         }
     }
 
@@ -89,6 +94,9 @@ public class TowerController : MonoBehaviour
                 UpgradeMesh();
                 break;
         }
+        treshholdvar += 1;
+        xptreshhold += treshholdvar * 5;
+        basedmg = lvl / 2;
     }
     void UpgradeMesh()
     {

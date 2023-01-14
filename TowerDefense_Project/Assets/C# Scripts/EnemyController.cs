@@ -53,7 +53,7 @@ public class EnemyController : GameManager
 
     void RoamingWaypoints()
     {
-        Debug.Log(UsedIndexes.Count);
+        //Debug.Log(UsedIndexes.Count);
         if (UsedIndexes.Count == EndPoints.endpoints.Length)
         {
             for (int j = 0; j <= UsedIndexes.Count; j++)

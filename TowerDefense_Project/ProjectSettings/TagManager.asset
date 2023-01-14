@@ -9,6 +9,10 @@ TagManager:
   - Tech
   - Math
   - Engineering
+  - ScienceSpawner
+  - TechSpawner
+  - EngineeringSpawner
+  - MathSpawner
   layers:
   - Default
   - TransparentFX

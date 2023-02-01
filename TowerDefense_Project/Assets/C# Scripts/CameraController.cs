@@ -14,13 +14,17 @@ public class CameraController : MonoBehaviour
     private float cam_z_move_min = -150f;
     private float cam_z_move_max = 350f;
 
+    public float sensitivity = 5.0f;
+
     public float hInput;
     public float vInput;
 
+    public float VerticalMouse;
+
     public float sped = 150.0f;
 
-    Vector3 direction1;
-    Vector3 direction2;
+    private Vector3 direction1;
+    private Vector3 direction2;
 
     public GameObject Playa;
 
@@ -46,6 +50,11 @@ public class CameraController : MonoBehaviour
         if (((Playa.transform.position.x < cam_x_move_min) && (Playa.transform.position.x > cam_x_min)) || (((Playa.transform.position.x > cam_x_move_max)) && (Playa.transform.position.x < cam_x_max))) { transform.Translate(Vector3.right * hInput * Time.deltaTime * sped); }
         if (((Playa.transform.position.z < cam_z_move_min) && (Playa.transform.position.z > cam_z_min)) || ((Playa.transform.position.z > cam_z_move_max) && (Playa.transform.position.z < cam_z_max))) { transform.Translate(Vector3.up * vInput * Time.deltaTime * sped); }
 
+        if (Input.GetMouseButton(1))
+        {
+            VerticalMouse = Input.GetAxis("Mouse Y");
+            transform.RotateAround(Playa.transform.position, Playa.transform.right, VerticalMouse * sensitivity);
+        }
 
     }
 }

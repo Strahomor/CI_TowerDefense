@@ -3,7 +3,9 @@ guid: 92bc4d28944f5314cbaa76111ee64498
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Playa: {fileID: 1456871630776290758, guid: 3bce1b8bf75cb4a499bc6bd35a8d2f61, type: 3}
+  - Pivot: {fileID: 919132149155446097, guid: 07a8155de49fe0b4cb5cea6b0c28aa6b, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

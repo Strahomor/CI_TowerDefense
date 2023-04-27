@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : GameManager
 {
     private float horizontalInput;
     private float verticalInput;

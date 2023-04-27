@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
     {
         EnemiesSpawned += 1;
         ChosenSpawner = Random.Range(0, AvailableSpawners.Count);
+        //Debug.Log(ChosenSpawner);
         switch (AvailableSpawners[ChosenSpawner].tag)
         {
             default:
@@ -153,12 +154,17 @@ public class GameManager : MonoBehaviour
         }
 
         Vector3 SpawnPosition = new Vector3(AvailableSpawners[ChosenSpawner].transform.position.x, AvailableSpawners[ChosenSpawner].transform.position.y, AvailableSpawners[ChosenSpawner].transform.position.z);
-        GameObject enemyclone = Instantiate(Enemies[EnemyToSpawn], SpawnPosition , Enemies[EnemyToSpawn].transform.rotation);
-        enemyclone.transform.parent = AvailableSpawners[ChosenSpawner].transform;
+        //Debug.Log(AvailableSpawners[ChosenSpawner].name);
+        GameObject enemyclone = Instantiate(Enemies[EnemyToSpawn], SpawnPosition, Enemies[EnemyToSpawn].transform.rotation, AvailableSpawners[ChosenSpawner].transform);
+        if (AvailableSpawners[ChosenSpawner] == null)
+        {
+            Debug.LogWarning("No spawner?");
+        }
+        //enemyclone.transform.parent = AvailableSpawners[ChosenSpawner].transform;
 
         if (EnemiesSpawned%SpawnerSpawnLimit-WaveCounter == 0)
         {
-            SpawnTimeDelay = System.Math.Exp(-EnemiesSpawned + 3) + 1.5;
+            SpawnTimeDelay = System.Math.Exp(-EnemiesSpawned + 2) + 1.5;
         }
         TimeInterval = 0;
     }

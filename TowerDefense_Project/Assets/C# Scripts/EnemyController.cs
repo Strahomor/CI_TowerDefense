@@ -11,15 +11,55 @@ public class EnemyController : GameManager
     private int endpointsindex;
     private int waypointIndex = 0;
     private int spawnerIndex = 0;
+    public string typetag;
 
+    public static Transform[] Motherland;
     private List<int> UsedIndexes = new List<int>();
 
-    void Start()
+    void Awake()
     {
-        target = Waypoints.points[0];
-        roaming = EndPoints.endpoints[0];
+        typetag = transform.parent.tag;
+        switch (typetag)
+        {
+            default:
+                break;
+            case "ScienceSpawner":
+                if (Random.Range(0, 2) == 0)
+                {
+                    Motherland = new Transform[Waypoints.sciencewaypoints1.Length];
+                    for (int i = 0; i<Waypoints.sciencewaypoints1.Length; i++) { Motherland[i] = Waypoints.sciencewaypoints1[i]; }
+                }
+                else { Motherland = new Transform[Waypoints.sciencewaypoints2.Length]; for (int i = 0; i < Waypoints.sciencewaypoints2.Length; i++) { Motherland[i] = Waypoints.sciencewaypoints2[i]; } }
+
+                break;
+            case "TechSpawner":
+                if (Random.Range(0, 2) == 0)
+                {
+                    Motherland = new Transform[Waypoints.techwaypoints1.Length];
+                    for (int i = 0; i < Waypoints.techwaypoints1.Length; i++) { Motherland[i] = Waypoints.techwaypoints1[i]; }
+                }
+                else { Motherland = new Transform[Waypoints.techwaypoints2.Length]; for (int i = 0; i < Waypoints.techwaypoints2.Length; i++) { Motherland[i] = Waypoints.techwaypoints2[i]; } }
+
+                break;
+            case "EngineeringSpawner":
+                if (Random.Range(0, 2) == 0)
+                {
+                    Motherland = new Transform[Waypoints.engineeringwaypoints1.Length];
+                    for (int i = 0; i < Waypoints.engineeringwaypoints1.Length; i++) { Motherland[i] = Waypoints.engineeringwaypoints1[i]; }
+                }
+                else { Motherland = new Transform[Waypoints.engineeringwaypoints2.Length]; for (int i = 0; i < Waypoints.engineeringwaypoints2.Length; i++) { Motherland[i] = Waypoints.engineeringwaypoints2[i]; } }
+                break;
+            case "MathSpawner":
+                if (Random.Range(0, 2) == 0) { Motherland = new Transform[Waypoints.mathwaypoints1.Length]; for (int i = 0; i < Waypoints.mathwaypoints1.Length; i++) { Motherland[i] = Waypoints.mathwaypoints1[i]; } }
+                else { Motherland = new Transform[Waypoints.mathwaypoints2.Length]; for (int i = 0; i < Waypoints.mathwaypoints2.Length; i++) { Motherland[i] = Waypoints.mathwaypoints2[i]; } }
+                break;
+
+        }
+        target = Motherland[0];
+        waypointIndex = 0;
         endpointsindex = 0;
         GetNextWaypoint();
+        //Debug.Log("k");
         
     }
     void Update()
@@ -32,7 +72,7 @@ public class EnemyController : GameManager
         }
 
 
-        if ((Vector3.Distance(transform.position, target.position) <= 0.4) && (waypointIndex >= Waypoints.points.Length - 1))
+        if ((Vector3.Distance(transform.position, target.position) <= 0.4) && (waypointIndex >= Motherland.Length - 1))
         {
             //Debug.Log("Roaming");
             RoamingWaypoints();
@@ -42,10 +82,10 @@ public class EnemyController : GameManager
     void GetNextWaypoint()
     {
         
-        if (waypointIndex <= Waypoints.points.Length - 1)
+        if (waypointIndex <= Motherland.Length - 1)
         {
             //Debug.Log("Targeted");
-            target = Waypoints.points[waypointIndex];
+            target = Motherland[waypointIndex];
             Vector3 dir = target.position - transform.position;
             waypointIndex++;
         }

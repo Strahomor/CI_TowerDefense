@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class ProtoPlayerController : MonoBehaviour
 {
-    public float horizontalInput;
-    public float verticalInput;
+    private float horizontalInput;
+    private float verticalInput;
     private float upInput;
+
+    private float lastaxish;
+    private float lastaxisv;
+
     Vector3 previouspos;
     Vector3 currentpos;
     Vector3 collidedpos;
@@ -38,8 +42,11 @@ public class ProtoPlayerController : MonoBehaviour
     public float rotationz;
     public float rotationy;
 
+    private string KeyPressed;
+
     Rigidbody n_rigidbody;
     public GameManager GameManager;
+    Animator animator;
 
     //List<GameObject> TowerSpawner = new List<GameObject>();
 
@@ -56,6 +63,7 @@ public class ProtoPlayerController : MonoBehaviour
         {
             GameManager = FindObjectOfType<GameManager>();
         }
+        animator = GetComponent<Animator>();
 
     }
     // Update is called once per frame
@@ -68,14 +76,15 @@ public class ProtoPlayerController : MonoBehaviour
         #region Movement
         if (!Collided)
         {
-            horizontalInput = Input.GetAxis("Horizontal");
+            horizontalInput = -(Input.GetAxis("Horizontal"));
             transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
+            lastaxish = horizontalInput;
         }
 
         else if (Collided)
         {
-            horizontalInput = Input.GetAxis("Horizontal");
-            transform.Translate(-(Vector3.right * horizontalInput * Time.deltaTime * speed/50));
+            horizontalInput = -(Input.GetAxis("Horizontal"));
+            transform.Translate(-(Vector3.right * lastaxish * Time.deltaTime * speed/50));
             //if ((rotationz >= 0) && (rotationz<= 180))
             //{
             //   n_rigidbody.AddForce(transform.right * 5000, ForceMode.Impulse);
@@ -85,13 +94,14 @@ public class ProtoPlayerController : MonoBehaviour
         }
         if (!Collided)
         {
-            verticalInput = Input.GetAxis("Vertical");
+            verticalInput = -(Input.GetAxis("Vertical"));
             transform.Translate(Vector3.forward * verticalInput * Time.deltaTime * speed);
+            lastaxisv = verticalInput;
         }
         else if (Collided)
         {
-            horizontalInput = Input.GetAxis("Vertical");
-            transform.Translate(-(Vector3.forward * verticalInput * Time.deltaTime * speed/50));
+            horizontalInput = -(Input.GetAxis("Vertical"));
+            transform.Translate(-(Vector3.forward * lastaxisv * Time.deltaTime * speed/50));
             //if ((rotationz >= 90) && (rotationz <= 270))
             //{
             //    n_rigidbody.AddForce(transform.right * 5000, ForceMode.Impulse);
@@ -161,6 +171,31 @@ public class ProtoPlayerController : MonoBehaviour
         {
             BuildMode = !(BuildMode);
         }
+
+        if (Input.GetKey(KeyCode.A)) { animator.SetBool("isTurningL", true); }
+        else if (Input.GetKey(KeyCode.D)) { animator.SetBool("isTurningR", true); }
+        else if (Input.GetKey(KeyCode.Space)) { animator.SetBool("isRising", true); }
+
+        if (Input.GetKeyUp(KeyCode.A)) { animator.SetBool("isTurningL", false); }
+        else if (Input.GetKeyUp(KeyCode.D)) { animator.SetBool("isTurningR", false); }
+        else if (Input.GetKeyUp(KeyCode.Space)) { animator.SetBool("isRising", false); }
+
+
+        switch (KeyPressed)
+        {
+            default:
+                break;
+            case "A":
+                animator.SetBool("isTurningL", true);
+                break;
+            case "D":
+                animator.SetBool("isTurningR", true);
+                break;
+            case "Space":
+                animator.SetBool("isRising", true);
+                break;
+        }
+
 
         if (BuildMode)
         {

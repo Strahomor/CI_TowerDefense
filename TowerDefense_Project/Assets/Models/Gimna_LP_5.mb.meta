@@ -6,7 +6,12 @@ ModelImporter:
   - first:
       74: 1827226128182048838
     second: Take 001
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Towers_STEM_Logo_lambert5
+    second: {fileID: -4612162990109294230, guid: 310d2afc128ff2448b688651e2f0e566, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

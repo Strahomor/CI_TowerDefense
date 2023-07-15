@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2525303778135530508}
   - component: {fileID: -7644952361712001839}
   - component: {fileID: -949899258219392766}
+  - component: {fileID: 5840665422651603153}
   m_Layer: 0
   m_Name: Towers_pCylinder910
   m_TagString: Untagged
@@ -100,7 +101,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!64 &-949899258219392766
 MeshCollider:
@@ -116,3 +117,16 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6687013863480931274, guid: 07a8155de49fe0b4cb5cea6b0c28aa6b, type: 3}
+--- !u!135 &5840665422651603153
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768005820860895235}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: -0.000001525879, y: 0, z: -0.21033631}

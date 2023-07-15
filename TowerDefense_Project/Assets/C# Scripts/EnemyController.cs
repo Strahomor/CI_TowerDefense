@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyController : GameManager
 {
-    public float Speed = 10f;
+    public float Speed = 100f;
     private Transform target;
     private Transform previous;
     private Transform roaming;
@@ -71,12 +71,6 @@ public class EnemyController : GameManager
             GetNextWaypoint();
         }
 
-
-        if ((Vector3.Distance(transform.position, target.position) <= 0.4) && (waypointIndex >= Motherland.Length - 1))
-        {
-            //Debug.Log("Roaming");
-            RoamingWaypoints();
-        }
     }
 
     void GetNextWaypoint()
@@ -89,6 +83,7 @@ public class EnemyController : GameManager
             Vector3 dir = target.position - transform.position;
             waypointIndex++;
         }
+        else if (waypointIndex == Motherland.Length) { Destroy(gameObject); }
     }
 
     void RoamingWaypoints()

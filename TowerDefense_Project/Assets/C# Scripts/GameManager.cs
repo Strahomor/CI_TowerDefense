@@ -156,6 +156,7 @@ public class GameManager : MonoBehaviour
         Vector3 SpawnPosition = new Vector3(AvailableSpawners[ChosenSpawner].transform.position.x, AvailableSpawners[ChosenSpawner].transform.position.y, AvailableSpawners[ChosenSpawner].transform.position.z);
         //Debug.Log(AvailableSpawners[ChosenSpawner].name);
         GameObject enemyclone = Instantiate(Enemies[EnemyToSpawn], SpawnPosition, Enemies[EnemyToSpawn].transform.rotation, AvailableSpawners[ChosenSpawner].transform);
+        enemyclone.tag = "Math";
         if (AvailableSpawners[ChosenSpawner] == null)
         {
             Debug.LogWarning("No spawner?");
@@ -175,16 +176,16 @@ public class GameManager : MonoBehaviour
         switch (Chooser)
         {
             case 0:
-                towerClone.tag = "Science"; 
+                towerClone.tag = "TechTower"; 
                 break;
             case 3:
-                towerClone.tag = "Tech";
+                towerClone.tag = "EngineeringTower";
                 break;
             case 6:
-                towerClone.tag = "Engineering";
+                towerClone.tag = "ScienceTower";
                 break;
             case 9:
-                towerClone.tag = "Math";
+                towerClone.tag = "MathTower";
                 break;
         }
         towerClone.AddComponent<TowerController>();

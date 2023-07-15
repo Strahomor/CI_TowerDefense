@@ -17,6 +17,10 @@ TagManager:
   - TechSpawnerAlt
   - MathSpawnerAlt
   - EngineeringSpawnerAlt
+  - ScienceTower
+  - TechTower
+  - EngineeringTower
+  - MathTower
   layers:
   - Default
   - TransparentFX

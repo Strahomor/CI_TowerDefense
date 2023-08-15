@@ -104,6 +104,10 @@ public class TowerController : MonoBehaviour
         if ((Targets.Count != 0) && (tsinceattack >= attacktime))   
         {
             Attack();
+            if (Targets[0] == null)
+            {
+                Debug.Log("Dead, need new one");
+            }
         }
     }
     void LevelUp()

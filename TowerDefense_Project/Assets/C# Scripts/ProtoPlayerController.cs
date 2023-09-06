@@ -33,7 +33,7 @@ public class ProtoPlayerController : MonoBehaviour
     public float x_max = 820.0f;
     public float y_min = 30.0f;
     public float y_max = 275.0f;
-    public float z_min = -295.0f;
+    public float z_min = -330.0f;
     public float z_max = 550.0f;
 
     public float speed = 150.0f;

@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
 {
     private float cam_x_min = -386.9f;
     private float cam_x_max = 800.0f;
-    private float cam_z_min = -275.0f;
+    private float cam_z_min = -290.0f;
     private float cam_z_max = 450.0f;
 
     private float cam_x_move_min = -310f;

@@ -53,6 +53,7 @@ public class ProjectileLogic : TowerController
             Destroy(gameObject);
             this.transform.parent.GetComponent<TowerController>().Targets.RemoveAt(0);
             ded = false;
+            GameManager.transform.GetComponent<GameManager>().Score += 10;
         }
 
         

@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public int WaveCounter;
     public int EnemiesKilled;
+    public int Score;
 
     public int ChosenSpawner;
     public int EnemyToSpawn;
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     private int EngineeringLimit;
     private int MathLimit;
     public List<GameObject> AvailableSpawners = new List<GameObject>();
+    public List<string> SpawnerInventory = new List<string>();
 
     private List<int> TempInts;
 
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Score = 0;
         Object[] prefabscollection = Resources.LoadAll("Prefabs/Towers/" );
         foreach (GameObject prefab in prefabscollection) { GameObject lo = (GameObject)prefab; Towers.Add(lo); }
 
@@ -55,6 +58,11 @@ public class GameManager : MonoBehaviour
         TotalSpawns = 16;
         SpawnerSpawnLimit = TotalSpawns / 4;
         SpawnTimeDelay = System.Math.Exp(-EnemiesSpawned + 2);
+
+        for (int i = 0; i <= 3; i++)
+        {
+            SpawnerInventory.Add("blank");
+        }
     }
 
     // Update is called once per frame

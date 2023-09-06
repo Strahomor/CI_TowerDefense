@@ -19,6 +19,7 @@ public class ProjectileLogic : TowerController
     // Update is called once per frame
     void Update()
     {
+        transform.Rotate(0, 1, 0);
         //if ((this.transform.parent.GetComponent<TowerController>().Targets[0] != prev) && (first != true))
         //{
         //    Destroy(this);
@@ -28,7 +29,7 @@ public class ProjectileLogic : TowerController
         
         if (this.transform.parent.GetComponent<TowerController>().Targets.Count == 0)
         {
-            Debug.Log("List is empty");
+            //Debug.Log("List is empty");
             Destroy(gameObject);
         }
         else if (this.transform.parent.GetComponent<TowerController>().Targets.Count != 0)

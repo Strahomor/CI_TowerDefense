@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private float cam_x_min = -486.9f;
-    private float cam_x_max = 750.0f;
-    private float cam_z_min = -295.0f;
-    private float cam_z_max = 550.0f;
+    private float cam_x_min = -386.9f;
+    private float cam_x_max = 800.0f;
+    private float cam_z_min = -275.0f;
+    private float cam_z_max = 450.0f;
 
-    private float cam_x_move_min = -410f;
-    private float cam_x_move_max = 585f;
-    private float cam_z_move_min = -150f;
-    private float cam_z_move_max = 350f;
+    private float cam_x_move_min = -310f;
+    private float cam_x_move_max = 485f;
+    private float cam_z_move_min = -50f;
+    private float cam_z_move_max = 250f;
 
     private float cam_rotate_x_min;
     private float cam_rotate_x_max;

@@ -174,7 +174,7 @@ public class TowerController : MonoBehaviour
         //Target = Targets[0];
         Vector3 ProjectileSpawn = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         GameObject projectile = Instantiate(setprojectile, ProjectileSpawn, transform.rotation, gameObject.transform);
-
+        
 
     }
 }

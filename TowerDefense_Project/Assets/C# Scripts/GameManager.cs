@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -39,12 +40,24 @@ public class GameManager : MonoBehaviour
 
     public HealthBarLogic healthBar;
 
+    public TMP_Text Cash;
+    public TMP_Text EnemiesLeft;
 
     // Start is called before the first frame update
     void Start()
     {
+        //TMP_Text[] textcomponents = GetComponents<TMP_Text>();
+        //for (int i = 0; i<textcomponents.Length; i++)
+        //{
+        //    if (textcomponents[i].name == "Cash")
+        //    {
+        //        Cash = textcomponents[i];
+        //    }
+        //} 
         Score = 0;
         Euros = 0;
+        Cash.text = Euros.ToString();
+        EnemiesLeft.text = TotalSpawns.ToString();
         HP = 100;
         Object[] prefabscollection = Resources.LoadAll("Prefabs/Towers/" );
         foreach (GameObject prefab in prefabscollection) { GameObject lo = (GameObject)prefab; Towers.Add(lo); }
@@ -83,6 +96,8 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         TimeInterval += Time.deltaTime;
+        Cash.text = Euros.ToString();
+        EnemiesLeft.text = (TotalSpawns - EnemiesKilled).ToString();
         if ((MathLimit >= System.Convert.ToInt32(SpawnerSpawnLimit)) || (ScienceLimit >= System.Convert.ToInt32(SpawnerSpawnLimit)) || (TechLimit >= System.Convert.ToInt32(SpawnerSpawnLimit)) || (EngineeringLimit >= System.Convert.ToInt32(SpawnerSpawnLimit)))
         {
             if (ScienceLimit >= System.Convert.ToInt32(SpawnerSpawnLimit))
@@ -194,23 +209,89 @@ public class GameManager : MonoBehaviour
     public void SpawnTower(int Chooser, Vector3 SpawnPos)
     
     {
-        GameObject towerClone = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
+        //GameObject towerClone = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
         switch (Chooser)
         {
             case 0:
-                towerClone.tag = "TechTower"; 
+                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Tech")))
+                {
+                    GameObject towerClone0 = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
+                    towerClone0.tag = "TechTower";
+                    towerClone0.AddComponent<TowerController>();
+                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Tech"))
+                    {
+                        SpawnerInventory.Remove("Tech");
+                    }
+                    else
+                    {
+                        SpawnerInventory.Remove("blank");
+                    }
+                    
+                }
+                else
+                {
+                    Debug.Log("No units available");
+                }
                 break;
             case 3:
-                towerClone.tag = "EngineeringTower";
+                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Engineering")))
+                {
+                    GameObject towerClone1 = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
+                    towerClone1.tag = "EngineeringTower";
+                    towerClone1.AddComponent<TowerController>();
+                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Engineering"))
+                    {
+                        SpawnerInventory.Remove("Engineering");
+                    }
+                    else
+                    {
+                        SpawnerInventory.Remove("blank");
+                    }
+                }
+                else
+                {
+                    Debug.Log("No units available");
+                }
                 break;
             case 6:
-                towerClone.tag = "ScienceTower";
+                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Science"))) {
+                    GameObject towerClone2 = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
+                    towerClone2.tag = "ScienceTower";
+                    towerClone2.AddComponent<TowerController>();
+                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Science"))
+                    {
+                        SpawnerInventory.Remove("Science");
+                    }
+                    else
+                    {
+                        SpawnerInventory.Remove("blank");
+                    }
+                }
+                else
+                {
+                    Debug.Log("No units available");
+                }
                 break;
             case 9:
-                towerClone.tag = "MathTower";
+                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Math"))){
+                    GameObject towerClone3 = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
+                    towerClone3.tag = "MathTower";
+                    towerClone3.AddComponent<TowerController>();
+                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Math"))
+                    {
+                        SpawnerInventory.Remove("Math");
+                    }
+                    else
+                    {
+                        SpawnerInventory.Remove("blank");
+                    }
+                }
+                else
+                {
+                    Debug.Log("No units available");
+                }
                 break;
         }
-        towerClone.AddComponent<TowerController>();
     }
 
     void WaveChange()

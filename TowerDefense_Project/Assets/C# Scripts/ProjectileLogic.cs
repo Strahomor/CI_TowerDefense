@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
+using Unity.UI;
 public class ProjectileLogic : MonoBehaviour
 {
     private Vector3 Target;
@@ -68,6 +69,7 @@ public class ProjectileLogic : MonoBehaviour
         }
         if (ded)
         {
+            CashIn(this.transform.parent.GetComponent<TowerController>().Targets[0].tag);
             this.transform.parent.GetComponent<TowerController>().Targets.RemoveAt(0);
             ded = false;
             GameManager.transform.GetComponent<GameManager>().Score += 10;
@@ -83,5 +85,17 @@ public class ProjectileLogic : MonoBehaviour
 
         
 
+    }
+    void CashIn(string enemytag)
+    {
+        if ((enemytag == "Science" && this.tag == "ProjectileS") || (enemytag == "Tech" && this.tag == "ProjectileT") || (enemytag == "Engineering" && this.tag == "ProjectileE") || (enemytag == "Math" && this.tag == "ProjectileM"))
+        {
+            GameManager.Euros += 200;
+        }
+        else
+        {
+            GameManager.Euros += 100;
+            Debug.Log("Got money");
+        }
     }
 }

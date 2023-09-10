@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public int WaveCounter;
     public int EnemiesKilled;
     public int Score;
+    public int HP;
+    public int Euros;
+    
 
     public int ChosenSpawner;
     public int EnemyToSpawn;
@@ -19,6 +22,7 @@ public class GameManager : MonoBehaviour
     private double TotalSpawns;
     private double SpawnerSpawnLimit;
     public int EnemiesSpawned;
+    public int EnemyLevel;
 
     private int ScienceLimit;
     private int TechLimit;
@@ -33,10 +37,15 @@ public class GameManager : MonoBehaviour
     public double SpawnTimeDelay;
     private Vector3 ObjectDump = new Vector3(999.0f, 999.0f, 999.0f);
 
+    public HealthBarLogic healthBar;
+
+
     // Start is called before the first frame update
     void Start()
     {
         Score = 0;
+        Euros = 0;
+        HP = 100;
         Object[] prefabscollection = Resources.LoadAll("Prefabs/Towers/" );
         foreach (GameObject prefab in prefabscollection) { GameObject lo = (GameObject)prefab; Towers.Add(lo); }
 
@@ -58,6 +67,11 @@ public class GameManager : MonoBehaviour
         TotalSpawns = 16;
         SpawnerSpawnLimit = TotalSpawns / 4;
         SpawnTimeDelay = System.Math.Exp(-EnemiesSpawned + 2);
+
+        EnemyLevel = 1;
+        healthBar = FindObjectOfType<HealthBarLogic>();
+        healthBar.SetHealth(100);
+        healthBar.SetMaxHealth(100);
 
         for (int i = 0; i <= 3; i++)
         {
@@ -211,6 +225,11 @@ public class GameManager : MonoBehaviour
             AvailableSpawners.Add(SpawnPoints[i]);
         }
         EnemiesSpawned = 0;
+        EnemiesKilled = 0;
+        if (WaveCounter % 5 == 0)
+        {
+            EnemyLevel += 1;
+        }
         Debug.Log("WaveChanged");
     }
 

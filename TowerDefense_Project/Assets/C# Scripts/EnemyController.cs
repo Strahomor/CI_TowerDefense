@@ -1,10 +1,14 @@
  using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class EnemyController : GameManager
+public class EnemyController : MonoBehaviour
 {
-    public float Speed = 100f;
+    public float Speed = 10f;
+    public int enemydmg = 10;
+    public float enemyhp = 0.5f;
+
     private Transform target;
     private Transform previous;
     private Transform roaming;
@@ -13,11 +17,18 @@ public class EnemyController : GameManager
     private int spawnerIndex = 0;
     public string typetag;
 
-    public static Transform[] Motherland;
+    public Transform[] Motherland;
     private List<int> UsedIndexes = new List<int>();
+
+    public GameManager GameManager;
+
+    void Start()
+    {
+    }
 
     void Awake()
     {
+        GameManager = FindObjectOfType<GameManager>();
         typetag = transform.parent.tag;
         switch (typetag)
         {
@@ -60,6 +71,10 @@ public class EnemyController : GameManager
         endpointsindex = 0;
         GetNextWaypoint();
         //Debug.Log("k");
+
+        enemydmg += (GameManager.EnemyLevel - 1) * 5;
+        enemyhp += (GameManager.EnemyLevel - 1) * 0.5f;
+
         
     }
     void Update()
@@ -67,7 +82,7 @@ public class EnemyController : GameManager
         Vector3 dir = target.position - transform.position;
         transform.Translate(dir.normalized * Speed * Time.deltaTime, Space.World);
 
-        if (Vector3.Distance(transform.position, target.position) <= 0.4){
+        if (Vector3.Distance(transform.position, target.position) <= 0.5){
             GetNextWaypoint();
         }
 
@@ -83,7 +98,13 @@ public class EnemyController : GameManager
             Vector3 dir = target.position - transform.position;
             waypointIndex++;
         }
-        else if (waypointIndex == Motherland.Length) { Destroy(gameObject); }
+        else if (waypointIndex > Motherland.Length-1) {
+            GameManager.HP -= enemydmg; 
+            GameManager.healthBar.SetHealth(GameManager.HP); 
+            Debug.Log("HP lowered"); 
+            Destroy(gameObject);
+            GameManager.EnemiesKilled += 1;
+        }
     }
 
     void RoamingWaypoints()

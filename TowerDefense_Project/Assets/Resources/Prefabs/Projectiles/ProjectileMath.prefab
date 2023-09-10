@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8465319104862673912}
   - component: {fileID: 2353640168066545282}
   - component: {fileID: 4169859779215267114}
+  - component: {fileID: 28172915566640611}
   m_Layer: 0
   m_Name: ProjectileMath
   m_TagString: Untagged
@@ -112,11 +113,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b14865d1eab55dd4889e7590cd5d4bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameManager: {fileID: 0}
-  TowerMeshes: []
-  Targets: []
-  Projectiles: []
   speed: 0
+  GameManager: {fileID: 0}
+--- !u!54 &28172915566640611
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723913943284185988}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7007020657849766637
 GameObject:
   m_ObjectHideFlags: 0

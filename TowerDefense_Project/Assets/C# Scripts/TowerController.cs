@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TowerController : MonoBehaviour
 {
-    private int lvl;
-    private float xp;
+    public int lvl;
+    public float xp;
     private float xptreshhold = 5;
     private float treshholdvar = 0;
     private float basedmg;

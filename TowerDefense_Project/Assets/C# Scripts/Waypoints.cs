@@ -22,7 +22,7 @@ public class Waypoints : GameManager
     private int techcounter1 = 0;
     private int techcounter2 = 0;
 
-    void Start()
+     void Start()
     {
         //Debug.LogWarning(GameObject.FindGameObjectsWithTag("EngineeringSpawner").Length);
         points = new Transform[transform.childCount];

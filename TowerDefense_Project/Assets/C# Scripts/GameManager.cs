@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> Towers;
     //public List<GameObject> InstantiatedTowers;
 
-    private double TotalSpawns;
+    public double TotalSpawns;
     private double SpawnerSpawnLimit;
     public int EnemiesSpawned;
     public int EnemyLevel;
@@ -35,28 +35,66 @@ public class GameManager : MonoBehaviour
     private List<int> TempInts;
 
     public float TimeInterval;
+    public float PreRoundTimer;
     public double SpawnTimeDelay;
+    private bool RoundOngoing;
+    private bool SkipWait;
     private Vector3 ObjectDump = new Vector3(999.0f, 999.0f, 999.0f);
 
     public HealthBarLogic healthBar;
 
     public TMP_Text Cash;
+    public TMP_Text ShopCash;
     public TMP_Text EnemiesLeft;
+    public TMP_Text CenterMessage;
+    public TMP_Text BottomRightMessage;
+
+    public TMP_Text InvS;
+    public TMP_Text InvT;
+    public TMP_Text InvE;
+    public TMP_Text InvM;
+
+    public Canvas ShopUI;
+    public Canvas InGameUI;
+
+    public enum UIStates { Main, Shop};
+    public UIStates currentstate;
+
+    public GameObject MainUIPanel;
+    public GameObject ShopUIPanel;
+    public GameObject PauseUI;
+
+    private string RoundMessage = "Next round in: ";
 
     // Start is called before the first frame update
     void Start()
-    {
-        //TMP_Text[] textcomponents = GetComponents<TMP_Text>();
-        //for (int i = 0; i<textcomponents.Length; i++)
-        //{
-        //    if (textcomponents[i].name == "Cash")
-        //    {
-        //        Cash = textcomponents[i];
-        //    }
-        //} 
+    { 
+        //currentstate = UIStates.Main;
+        PauseUI.SetActive(false);
+        ShopUIPanel.SetActive(false);
+        MainUIPanel.SetActive(true);
+        for (int i = 0; i <= 3; i++)
+        {
+            SpawnerInventory.Add("blank");
+        }
+        InvS.gameObject.SetActive(false);
+        InvT.gameObject.SetActive(false);
+        InvE.gameObject.SetActive(false);
+        InvM.gameObject.SetActive(false);
+        SkipWait = false;
+        RoundOngoing = false;
+        //PreRoundTime = 30;
+        PreRoundTimer = 30;
+        //InGameUI.gameObject.SetActive(true);
+        //ShopUI.gameObject.SetActive(false);
+        CenterMessage.gameObject.SetActive(true);
+        BottomRightMessage.gameObject.SetActive(true);
+        CenterMessage.text = RoundMessage + System.Convert.ToInt32(PreRoundTimer).ToString();
+        BottomRightMessage.text = "Press B to open the shop!";
         Score = 0;
         Euros = 0;
         Cash.text = Euros.ToString();
+        ShopCash.text = Euros.ToString();
         EnemiesLeft.text = TotalSpawns.ToString();
         HP = 100;
         Object[] prefabscollection = Resources.LoadAll("Prefabs/Towers/" );
@@ -76,8 +114,8 @@ public class GameManager : MonoBehaviour
         //Debug.Log(SpawnPoints.Count);
         //Debug.Log(AvailableSpawners.Count);
 
-        WaveCounter = 1;
-        TotalSpawns = 16;
+        WaveCounter = 0;
+        TotalSpawns = 0;
         SpawnerSpawnLimit = TotalSpawns / 4;
         SpawnTimeDelay = System.Math.Exp(-EnemiesSpawned + 2);
 
@@ -86,18 +124,47 @@ public class GameManager : MonoBehaviour
         healthBar.SetHealth(100);
         healthBar.SetMaxHealth(100);
 
-        for (int i = 0; i <= 3; i++)
-        {
-            SpawnerInventory.Add("blank");
-        }
+        
     }
 
+    private void FixedUpdate()
+    {
+        PreRoundTimer -= Time.deltaTime;
+    }
     // Update is called once per frame
     void Update()
     {
+        
+        if (WaveCounter == 0)
+        {
+            PreRound();
+            BottomRightMessage.gameObject.SetActive(true);
+        }
+
+        if ((TimeInterval >= SpawnTimeDelay) && (EnemiesSpawned < TotalSpawns) && (RoundOngoing))
+        {
+            SpawnEnemy();
+        }
+
+        if ((EnemiesKilled >= TotalSpawns) && (WaveCounter != 0))
+        {
+            if (RoundOngoing)
+            {
+                RoundOngoing = !RoundOngoing;
+                CenterMessage.gameObject.SetActive(true);
+                BottomRightMessage.gameObject.SetActive(true);
+            }
+            PreRound();
+            //WaveChange(); 
+        }
+
+        if ((Input.GetKeyDown(KeyCode.K) && (!RoundOngoing)))
+        {
+            SkipWait = true;
+        }
+
         TimeInterval += Time.deltaTime;
-        Cash.text = Euros.ToString();
-        EnemiesLeft.text = (TotalSpawns - EnemiesKilled).ToString();
+
         if ((MathLimit >= System.Convert.ToInt32(SpawnerSpawnLimit)) || (ScienceLimit >= System.Convert.ToInt32(SpawnerSpawnLimit)) || (TechLimit >= System.Convert.ToInt32(SpawnerSpawnLimit)) || (EngineeringLimit >= System.Convert.ToInt32(SpawnerSpawnLimit)))
         {
             if (ScienceLimit >= System.Convert.ToInt32(SpawnerSpawnLimit))
@@ -118,14 +185,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if ((TimeInterval  >= SpawnTimeDelay) && (EnemiesSpawned < TotalSpawns))
-        {
-            SpawnEnemy();
-        } 
-        if (EnemiesKilled >= TotalSpawns)
-        {
-            WaveChange(); 
-        }
+        
     }
 
     void SpawnEnemy()
@@ -296,8 +356,14 @@ public class GameManager : MonoBehaviour
 
     void WaveChange()
     {
+        
+        if (WaveCounter != 0) { 
+            TotalSpawns = System.Math.Pow(4, WaveCounter + 2); 
+        }
+        else { 
+            TotalSpawns = 16;
+        }
         WaveCounter += 1;
-        TotalSpawns = System.Math.Pow(4, WaveCounter + 2);
         SpawnerSpawnLimit = TotalSpawns / 4;
         //MathLimit = System.Convert.ToInt32(SpawnerSpawnLimit); TechLimit = System.Convert.ToInt32(SpawnerSpawnLimit); ScienceLimit = System.Convert.ToInt32(SpawnerSpawnLimit); EngineeingLimit = System.Convert.ToInt32(SpawnerSpawnLimit);
         ScienceLimit = 0; TechLimit = 0; EngineeringLimit = 0; MathLimit = 0;
@@ -311,11 +377,116 @@ public class GameManager : MonoBehaviour
         {
             EnemyLevel += 1;
         }
+        RoundOngoing = true;
+        //ShopUI.gameObject.SetActive(false);
+        //InGameUI.gameObject.SetActive(true);
+        ShopUIPanel.SetActive(false);
+        MainUIPanel.SetActive(true);
+        currentstate = UIStates.Main;
+        EnemiesLeft.text = TotalSpawns.ToString();
+        BottomRightMessage.text = "Press E to enter build mode!";
         Debug.Log("WaveChanged");
+    }
+
+    void PreRound()
+    {
+        if(PreRoundTimer <= 0) 
+        {
+            WaveChange();
+            CenterMessage.gameObject.SetActive(false);
+            PreRoundTimer = 30;
+        }
+        else if ((SkipWait == true) && (!RoundOngoing))
+        {
+            WaveChange();
+            CenterMessage.gameObject.SetActive(false);
+            PreRoundTimer = 30;
+            SkipWait = false;
+        }
+        else
+        {
+            BottomRightMessage.text = "Press B to open the shop!";
+            if (Input.GetKeyDown(KeyCode.B)) //&& (ShopOpened == false))
+            {
+                ActivatePanel();
+                //Debug.LogError("Pressed once");
+                //InGameUI.gameObject.SetActive(false);
+                //ShopUI.gameObject.SetActive(true);
+                //ShopOpened = true;
+            }
+            //else if ((Input.GetKeyDown(KeyCode.B)) && (ShopOpened == true))
+            //{
+               // ActivateCanvas();
+                //InGameUI.gameObject.SetActive(true);
+                //ShopUI.gameObject.SetActive(false);
+                //ShopOpened = false;
+
+            //}
+            CenterMessage.text = RoundMessage + System.Convert.ToInt32(PreRoundTimer).ToString();
+        }
     }
 
     void ZaWarudo()
     {
         
+    }
+    //void ActivateCanvas()
+    //{
+    //    if (ShopOpened == true)
+    //    {
+    //        ShopUI.gameObject.SetActive(false);
+    //        InGameUI.gameObject.SetActive(true);
+    //        for (int i = 0; i<InGameUI.transform.childCount; i++)
+    //        {
+    //            InGameUI.transform.GetChild(i).gameObject.SetActive(true);
+    //        }
+    //        ShopOpened = false;
+    //    }
+    //    else if (ShopOpened == false)
+    //    {
+    //        ShopUI.gameObject.SetActive(true);
+    //        InGameUI.gameObject.SetActive(false);
+    //        for (int i = 0; i < ShopUI.transform.childCount; i++)
+    //        {
+    //            ShopUI.transform.GetChild(i).gameObject.SetActive(true);
+    //        }
+    //        ShopOpened = true;
+    //    }
+    //}
+
+    void ActivatePanel()
+    {
+        if (currentstate == UIStates.Shop)
+        {
+            currentstate = UIStates.Main;
+            Debug.LogWarning("Switched to main");
+            switch (currentstate)
+            {
+                case UIStates.Main:
+                    ShopUIPanel.SetActive(false);
+                    MainUIPanel.SetActive(true);
+                    break;
+                case UIStates.Shop:
+                    MainUIPanel.SetActive(false);
+                    ShopUIPanel.SetActive(true);
+                    break;
+            }
+        }
+        else if (currentstate == UIStates.Main)
+        {
+            currentstate = UIStates.Shop;
+            Debug.LogWarning("Switched to shop");
+            switch (currentstate)
+            {
+                case UIStates.Main:
+                    ShopUIPanel.SetActive(false);
+                    MainUIPanel.SetActive(true);
+                    break;
+                case UIStates.Shop:
+                    MainUIPanel.SetActive(false);
+                    ShopUIPanel.SetActive(true);
+                    break;
+            }
+        }
     }
 }

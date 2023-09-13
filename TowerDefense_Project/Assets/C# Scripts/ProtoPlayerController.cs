@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using TMPro;
 
 public class ProtoPlayerController : MonoBehaviour
 {
@@ -43,6 +44,11 @@ public class ProtoPlayerController : MonoBehaviour
     public float rotationy;
 
     private string KeyPressed;
+
+    public int sNumber;
+    public int tNumber;
+    public int eNumber;
+    public int mNumber;
 
     Rigidbody n_rigidbody;
     public GameManager GameManager;
@@ -170,6 +176,50 @@ public class ProtoPlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             BuildMode = !(BuildMode);
+            if (BuildMode)
+            {
+                GameManager.InvS.gameObject.SetActive(true);
+                GameManager.InvT.gameObject.SetActive(true);
+                GameManager.InvE.gameObject.SetActive(true);
+                GameManager.InvM.gameObject.SetActive(true);
+                foreach (string i in GameManager.SpawnerInventory)
+                {
+                    if ((i == "Science") || (i == "blank"))
+                    {
+                        sNumber += 1;
+                    }
+                    if ((i == "Tech") || (i == "blank"))
+                    {
+                        tNumber += 1;
+                    }
+                    if ((i == "Engineering") || (i == "blank"))
+                    {
+                        eNumber += 1;
+                    }
+                    if ((i == "Math") || (i == "blank"))
+                    {
+                        mNumber += 1;
+                    }
+                    GameManager.InvS.text = sNumber.ToString();
+                    GameManager.InvT.text = tNumber.ToString();
+                    GameManager.InvE.text = eNumber.ToString();
+                    GameManager.InvM.text = mNumber.ToString();
+                }
+            }
+            else
+            {
+                GameManager.InvS.gameObject.SetActive(false);
+                GameManager.InvT.gameObject.SetActive(false);
+                GameManager.InvE.gameObject.SetActive(false);
+                GameManager.InvM.gameObject.SetActive(false);
+                sNumber = 0;
+                tNumber = 0;
+                eNumber = 0;
+                mNumber = 0;
+            }
+
+            
+            //GameManager.BottomRightMessage.text = "Press 1,2,3,4 for S,T,E,M";
         }
 
         if (Input.GetKey(KeyCode.A)) { animator.SetBool("isTurningL", true); }
@@ -199,6 +249,8 @@ public class ProtoPlayerController : MonoBehaviour
 
         if (BuildMode)
         {
+            
+            GameManager.CenterMessage.text = "Press 1,2,3,4 for S,T,E,M towers";
             Vector3 up = transform.TransformDirection(Vector3.up);
             RaycastHit hit;
             Ray ray = new Ray(transform.position, -(transform.up));
@@ -212,21 +264,25 @@ public class ProtoPlayerController : MonoBehaviour
                     {
                         Selected = 0;
                         GameManager.SpawnTower(Selected, TowerPos);
+                        
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha2))
                     {
                         Selected = 3;
                         GameManager.SpawnTower(Selected, TowerPos);
+                        
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha3))
                     {
                         Selected = 6;
                         GameManager.SpawnTower(Selected, TowerPos);
+                        
                     }
                     else if (Input.GetKeyDown(KeyCode.Alpha4))
                     {
                         Selected = 9;
                         GameManager.SpawnTower(Selected, TowerPos);
+                        
                     }
                     //Debug.Log(Selected);
                 }

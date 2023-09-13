@@ -70,10 +70,13 @@ public class ProjectileLogic : MonoBehaviour
         if (ded)
         {
             CashIn(this.transform.parent.GetComponent<TowerController>().Targets[0].tag);
+            GameManager.Cash.text = GameManager.Euros.ToString();
+            GameManager.ShopCash.text = GameManager.Euros.ToString();
             this.transform.parent.GetComponent<TowerController>().Targets.RemoveAt(0);
             ded = false;
             GameManager.transform.GetComponent<GameManager>().Score += 10;
             GameManager.EnemiesKilled += 1;
+            GameManager.EnemiesLeft.text = (GameManager.TotalSpawns - GameManager.EnemiesKilled).ToString();
             Destroy(gameObject);
         }
 
@@ -90,11 +93,11 @@ public class ProjectileLogic : MonoBehaviour
     {
         if ((enemytag == "Science" && this.tag == "ProjectileS") || (enemytag == "Tech" && this.tag == "ProjectileT") || (enemytag == "Engineering" && this.tag == "ProjectileE") || (enemytag == "Math" && this.tag == "ProjectileM"))
         {
-            GameManager.Euros += 200;
+            GameManager.Euros += 20;
         }
         else
         {
-            GameManager.Euros += 100;
+            GameManager.Euros += 10;
             Debug.Log("Got money");
         }
     }

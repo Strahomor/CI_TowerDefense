@@ -1,7 +1,7 @@
 using UnityEngine;
 
 //amongusaj neki counter
-public class Waypoints : GameManager
+public class Waypoints : MonoBehaviour
 {
     public static Transform[] points;
     public static Transform[] mathwaypoints1;

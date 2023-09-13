@@ -101,9 +101,11 @@ public class EnemyController : MonoBehaviour
         else if (waypointIndex > Motherland.Length-1) {
             GameManager.HP -= enemydmg; 
             GameManager.healthBar.SetHealth(GameManager.HP); 
-            Debug.Log("HP lowered"); 
-            Destroy(gameObject);
+            Debug.Log("HP lowered");
             GameManager.EnemiesKilled += 1;
+            GameManager.EnemiesLeft.text = (GameManager.TotalSpawns - GameManager.EnemiesKilled).ToString();
+            Destroy(gameObject);
+            
         }
     }
 

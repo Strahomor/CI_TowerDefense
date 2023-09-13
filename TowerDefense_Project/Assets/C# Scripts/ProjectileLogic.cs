@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Unity.UI;
+//using Unity.UI;
 public class ProjectileLogic : MonoBehaviour
 {
     private Vector3 Target;

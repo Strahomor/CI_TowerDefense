@@ -26,7 +26,10 @@ public class PauseButton : MonoBehaviour
                 GameManager.ZaWarudo();
                 break;
             case "QuitButton":
-                Debug.Log("Quit");
+                //Debug.Log("Quit");
+                SceneManager.LoadScene("MainMenu");
+                break;
+            case "ExitButton":
                 Application.Quit();
                 break;
             case "ScreenSizeChanger":

@@ -48,21 +48,23 @@ public class GameManager : MonoBehaviour
     public TMP_Text EnemiesLeft;
     public TMP_Text CenterMessage;
     public TMP_Text BottomRightMessage;
+    public TMP_Text FullScreenMode;
 
     public TMP_Text InvS;
     public TMP_Text InvT;
     public TMP_Text InvE;
     public TMP_Text InvM;
-
-    public Canvas ShopUI;
-    public Canvas InGameUI;
-
-    public enum UIStates { Main, Shop};
+    public TMP_Text ScoreVal;
+    public TMP_Text WaveNum;
+    public enum UIStates { Main, Shop, Pause, Ded};
     public UIStates currentstate;
 
     public GameObject MainUIPanel;
     public GameObject ShopUIPanel;
     public GameObject PauseUI;
+    public GameObject DedUI;
+
+    public ProtoPlayerController Player;
 
     private string RoundMessage = "Next round in: ";
 
@@ -72,6 +74,7 @@ public class GameManager : MonoBehaviour
         //currentstate = UIStates.Main;
         PauseUI.SetActive(false);
         ShopUIPanel.SetActive(false);
+        DedUI.SetActive(false);
         MainUIPanel.SetActive(true);
         for (int i = 0; i <= 3; i++)
         {
@@ -83,10 +86,7 @@ public class GameManager : MonoBehaviour
         InvM.gameObject.SetActive(false);
         SkipWait = false;
         RoundOngoing = false;
-        //PreRoundTime = 30;
         PreRoundTimer = 30;
-        //InGameUI.gameObject.SetActive(true);
-        //ShopUI.gameObject.SetActive(false);
         CenterMessage.gameObject.SetActive(true);
         BottomRightMessage.gameObject.SetActive(true);
         CenterMessage.text = RoundMessage + System.Convert.ToInt32(PreRoundTimer).ToString();
@@ -99,14 +99,6 @@ public class GameManager : MonoBehaviour
         HP = 100;
         Object[] prefabscollection = Resources.LoadAll("Prefabs/Towers/" );
         foreach (GameObject prefab in prefabscollection) { GameObject lo = (GameObject)prefab; Towers.Add(lo); }
-
-        //for (int i = 0; i < Towers.Count; i++)
-        //{
-        //    GameObject ogTower = Instantiate(Towers[i], ObjectDump, Quaternion.identity);
-        //    InstantiatedTowers.Add(ogTower);
-            //Debug.Log("Instantiated tower");
-        //}
-
         for (int i = 0; i<SpawnPoints.Count; i++)
         {
             AvailableSpawners.Add(SpawnPoints[i]);
@@ -124,6 +116,14 @@ public class GameManager : MonoBehaviour
         healthBar.SetHealth(100);
         healthBar.SetMaxHealth(100);
 
+        if (Screen.fullScreen)
+        {
+            FullScreenMode.text = "On";
+        }
+        else
+        {
+            FullScreenMode.text = "Off";
+        }
         
     }
 
@@ -134,7 +134,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (HP<= 0)
+        {
+            Ded();
+        }
         if (WaveCounter == 0)
         {
             PreRound();
@@ -184,8 +187,11 @@ public class GameManager : MonoBehaviour
                 AvailableSpawners.Remove(GameObject.FindGameObjectWithTag("MathSpawner"));
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ZaWarudo();
+        }
 
-        
     }
 
     void SpawnEnemy()
@@ -273,18 +279,23 @@ public class GameManager : MonoBehaviour
         switch (Chooser)
         {
             case 0:
-                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Tech")))
+                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Science")))
                 {
                     GameObject towerClone0 = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
-                    towerClone0.tag = "TechTower";
+                    towerClone0.tag = "ScienceTower";
                     towerClone0.AddComponent<TowerController>();
-                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Tech"))
+                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Science"))
                     {
-                        SpawnerInventory.Remove("Tech");
+                        SpawnerInventory.Remove("Science");
+                        Player.sNumber -= 1;
                     }
                     else
                     {
                         SpawnerInventory.Remove("blank");
+                        Player.sNumber -= 1;
+                        Player.tNumber -= 1;
+                        Player.eNumber -= 1;
+                        Player.mNumber -= 1;
                     }
                     
                 }
@@ -294,18 +305,23 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case 3:
-                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Engineering")))
+                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Tech")))
                 {
                     GameObject towerClone1 = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
-                    towerClone1.tag = "EngineeringTower";
+                    towerClone1.tag = "TechTower";
                     towerClone1.AddComponent<TowerController>();
-                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Engineering"))
+                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Tech"))
                     {
-                        SpawnerInventory.Remove("Engineering");
+                        SpawnerInventory.Remove("Tech");
+                        Player.tNumber -= 1;
                     }
                     else
                     {
                         SpawnerInventory.Remove("blank");
+                        Player.sNumber -= 1;
+                        Player.tNumber -= 1;
+                        Player.eNumber -= 1;
+                        Player.mNumber -= 1;
                     }
                 }
                 else
@@ -314,17 +330,22 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case 6:
-                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Science"))) {
+                if ((SpawnerInventory.Contains("blank")) || (SpawnerInventory.Contains("Engineering"))) {
                     GameObject towerClone2 = Instantiate(Towers[Chooser], SpawnPos, Towers[Chooser].transform.rotation);
-                    towerClone2.tag = "ScienceTower";
+                    towerClone2.tag = "EngineeringTower";
                     towerClone2.AddComponent<TowerController>();
-                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Science"))
+                    if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Engineering"))
                     {
-                        SpawnerInventory.Remove("Science");
+                        SpawnerInventory.Remove("Engineering");
+                        Player.eNumber -= 1;
                     }
                     else
                     {
                         SpawnerInventory.Remove("blank");
+                        Player.sNumber -= 1;
+                        Player.tNumber -= 1;
+                        Player.eNumber -= 1;
+                        Player.mNumber -= 1;
                     }
                 }
                 else
@@ -340,10 +361,15 @@ public class GameManager : MonoBehaviour
                     if (SpawnerInventory.Contains("blank") && (SpawnerInventory).Contains("Math"))
                     {
                         SpawnerInventory.Remove("Math");
+                        Player.mNumber -= 1;
                     }
                     else
                     {
                         SpawnerInventory.Remove("blank");
+                        Player.sNumber -= 1;
+                        Player.tNumber -= 1;
+                        Player.eNumber -= 1;
+                        Player.mNumber -= 1;
                     }
                 }
                 else
@@ -352,13 +378,19 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
+        InvS.text = Player.sNumber.ToString();
+        InvT.text = Player.tNumber.ToString();
+        InvE.text = Player.eNumber.ToString();
+        InvM.text = Player.mNumber.ToString();
+
     }
 
     void WaveChange()
     {
         
         if (WaveCounter != 0) { 
-            TotalSpawns = System.Math.Pow(4, WaveCounter + 2); 
+            TotalSpawns = System.Math.Pow(4, WaveCounter + 2);
+            Score += WaveCounter * 100;
         }
         else { 
             TotalSpawns = 16;
@@ -426,9 +458,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void ZaWarudo()
+    public void ZaWarudo()
     {
+        if (currentstate != UIStates.Pause)
+        {
+            Time.timeScale = 0;
+            currentstate = UIStates.Pause;
+            ShopUIPanel.SetActive(false);
+            MainUIPanel.SetActive(false);
+            PauseUI.SetActive(true);
+        }
+        else
+        {
+            Time.timeScale = 1;
+            currentstate = UIStates.Main ;
+            MainUIPanel.SetActive(true);
+            PauseUI.SetActive(false);
+        }
         
+
     }
     //void ActivateCanvas()
     //{
@@ -488,5 +536,14 @@ public class GameManager : MonoBehaviour
                     break;
             }
         }
+    }
+    void Ded()
+    {
+        ScoreVal.text = Score.ToString();
+        WaveNum.text = WaveCounter.ToString();
+        Time.timeScale = 0;
+        currentstate = UIStates.Ded;
+        MainUIPanel.SetActive(false);
+        DedUI.SetActive(true);
     }
 }

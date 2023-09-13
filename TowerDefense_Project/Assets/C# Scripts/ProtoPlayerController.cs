@@ -250,7 +250,7 @@ public class ProtoPlayerController : MonoBehaviour
         if (BuildMode)
         {
             
-            GameManager.CenterMessage.text = "Press 1,2,3,4 for S,T,E,M towers";
+            GameManager.BottomRightMessage.text = "Press 1,2,3,4 for S,T,E,M towers";
             Vector3 up = transform.TransformDirection(Vector3.up);
             RaycastHit hit;
             Ray ray = new Ray(transform.position, -(transform.up));

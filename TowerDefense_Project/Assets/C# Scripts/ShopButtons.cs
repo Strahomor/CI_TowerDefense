@@ -8,8 +8,17 @@ public class ShopButtons : MonoBehaviour
 {
     public string buttonName;
     public GameManager GameManager;
+    public List<string> TowerTypes;
     //public HealthBarLogic healthBar;
 
+    private void Awake()
+    {
+        TowerTypes.Add("blank");
+        TowerTypes.Add("Science");
+        TowerTypes.Add("Tech");
+        TowerTypes.Add("Engineering");
+        TowerTypes.Add("Math");
+    }
     public void ShopButtonPress()
     {
         GameManager = FindObjectOfType<GameManager>();
@@ -61,7 +70,8 @@ public class ShopButtons : MonoBehaviour
             case "RandomButton":
                 if (GameManager.Euros >= 100)
                 {
-                    GameManager.SpawnerInventory.Add("blank");
+                    var randint = Random.RandomRange(0, 6);
+                    GameManager.SpawnerInventory.Add(TowerTypes[randint]);
                 }
                 else
                 {

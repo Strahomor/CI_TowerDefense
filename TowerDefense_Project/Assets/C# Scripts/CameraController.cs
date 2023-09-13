@@ -28,7 +28,11 @@ public class CameraController : MonoBehaviour
     public float HorizontalMouse;
 
     private float prevRotation;
+    public float ogX;
+    public float ogY;
+    public float ogZ;
     private Vector3 startingRotation;
+    public Vector3 startingPosition;
 
     public float sped = 150.0f;
 
@@ -46,12 +50,25 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startingRotation = new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z);
-    }
         
+
+    }
+    private void Awake()
+    {
+        ogX = transform.rotation.eulerAngles.x;
+        ogY = transform.rotation.eulerAngles.y;
+        ogZ = transform.rotation.eulerAngles.z;
+        startingPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            transform.rotation = Quaternion.Euler(ogX, ogY, ogZ);
+            transform.position = startingPosition;
+        }
         hInput = Input.GetAxis("Horizontal");
         vInput = Input.GetAxis("Vertical");
 

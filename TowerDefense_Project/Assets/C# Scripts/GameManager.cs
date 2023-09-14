@@ -262,7 +262,21 @@ public class GameManager : MonoBehaviour
         Vector3 SpawnPosition = new Vector3(AvailableSpawners[ChosenSpawner].transform.position.x, AvailableSpawners[ChosenSpawner].transform.position.y, AvailableSpawners[ChosenSpawner].transform.position.z);
         //Debug.Log(AvailableSpawners[ChosenSpawner].name);
         GameObject enemyclone = Instantiate(Enemies[EnemyToSpawn], SpawnPosition, Enemies[EnemyToSpawn].transform.rotation, AvailableSpawners[ChosenSpawner].transform);
-        enemyclone.tag = "Math";
+        switch (EnemyToSpawn)
+        {
+            case 0:
+                enemyclone.tag = "Science";
+                break;
+            case 1:
+                enemyclone.tag = "Tech";
+                break;
+            case 2:
+                enemyclone.tag = "Engineering";
+                break;
+            case 3:
+                enemyclone.tag = "Math";
+                break;
+        }
         if (AvailableSpawners[ChosenSpawner] == null)
         {
             Debug.LogWarning("No spawner?");

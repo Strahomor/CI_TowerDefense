@@ -28,6 +28,7 @@ public class EnemyController : MonoBehaviour
 
     void Awake()
     {
+        Speed = 20f;
         GameManager = FindObjectOfType<GameManager>();
         typetag = transform.parent.tag;
         switch (typetag)
@@ -97,6 +98,10 @@ public class EnemyController : MonoBehaviour
             target = Motherland[waypointIndex];
             Vector3 dir = target.position - transform.position;
             waypointIndex++;
+            //transform.Rotate(Motherland[waypointIndex].transform.rotation.x - transform.rotation.x, Motherland[waypointIndex].transform.rotation.y - transform.rotation.y, Motherland[waypointIndex].transform.rotation.z - transform.rotation.z);
+            //Quaternion toRotation = Quaternion.LookRotation(dir, Vector3.up);
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720*Time.deltaTime);
+            transform.forward = dir;
         }
         else if (waypointIndex > Motherland.Length-1) {
             GameManager.HP -= enemydmg; 

@@ -182,6 +182,7 @@ public class ProtoPlayerController : MonoBehaviour
                 GameManager.InvT.gameObject.SetActive(true);
                 GameManager.InvE.gameObject.SetActive(true);
                 GameManager.InvM.gameObject.SetActive(true);
+                GameManager.BottomRightMessage.text = "Press 1,2,3,4 for S,T,E,M towers";
                 foreach (string i in GameManager.SpawnerInventory)
                 {
                     if ((i == "Science") || (i == "blank"))
@@ -212,6 +213,7 @@ public class ProtoPlayerController : MonoBehaviour
                 GameManager.InvT.gameObject.SetActive(false);
                 GameManager.InvE.gameObject.SetActive(false);
                 GameManager.InvM.gameObject.SetActive(false);
+                GameManager.BottomRightMessage.text = "Press E to enter build mode";
                 sNumber = 0;
                 tNumber = 0;
                 eNumber = 0;
@@ -250,7 +252,6 @@ public class ProtoPlayerController : MonoBehaviour
         if (BuildMode)
         {
             
-            GameManager.BottomRightMessage.text = "Press 1,2,3,4 for S,T,E,M towers";
             Vector3 up = transform.TransformDirection(Vector3.up);
             RaycastHit hit;
             Ray ray = new Ray(transform.position, -(transform.up));
@@ -288,6 +289,7 @@ public class ProtoPlayerController : MonoBehaviour
                 }
                 else
                 {
+
                     //Debug.Log("Area not usable");
                 }
             }

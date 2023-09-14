@@ -50,8 +50,15 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        cam_x_min = -386.9f;
+        cam_x_max = 810.0f;
+        cam_z_min = -290.0f;
+        cam_z_max = 450.0f;
 
+        cam_x_move_min = -310f;
+        cam_x_move_max = 425f;
+        cam_z_move_min = -50f;
+        cam_z_move_max = 250f;
     }
     private void Awake()
     {

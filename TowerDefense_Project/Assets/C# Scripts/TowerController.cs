@@ -95,7 +95,7 @@ public class TowerController : MonoBehaviour
     }
     void Update()
     {
-        tsinceattack += Time.deltaTime;
+        tsinceattack += Time.deltaTime/4;
         if (xp >= xptreshhold)
         {
             LevelUp();

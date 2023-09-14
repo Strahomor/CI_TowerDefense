@@ -129,7 +129,10 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PreRoundTimer -= Time.deltaTime;
+        if (!RoundOngoing)
+        {
+            PreRoundTimer -= Time.deltaTime;
+        }  
     }
     // Update is called once per frame
     void Update()

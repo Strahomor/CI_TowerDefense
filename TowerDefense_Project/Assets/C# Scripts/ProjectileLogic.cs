@@ -26,6 +26,11 @@ public class ProjectileLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (this.transform.parent.GetComponent<TowerController>().Targets[0] == null)
+        {
+            this.transform.parent.GetComponent<TowerController>().Targets.RemoveAt(0);
+            Destroy(gameObject);
+        }
         transform.Rotate(0, 1, 0);
         //if ((this.transform.parent.GetComponent<TowerController>().Targets[0] != prev) && (first != true))
         //{

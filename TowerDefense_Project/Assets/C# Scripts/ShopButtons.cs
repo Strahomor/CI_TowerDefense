@@ -31,6 +31,9 @@ public class ShopButtons : MonoBehaviour
                 if (GameManager.Euros >= 200)
                 {
                     GameManager.SpawnerInventory.Add("Science");
+                    GameManager.Euros -= 200;
+                    GameManager.ShopCash.text = GameManager.Euros.ToString();
+                    GameManager.Cash.text = GameManager.Euros.ToString();
                 }
                 else
                 {
@@ -41,6 +44,9 @@ public class ShopButtons : MonoBehaviour
                 if (GameManager.Euros >= 200)
                 {
                     GameManager.SpawnerInventory.Add("Tech");
+                    GameManager.Euros -= 200;
+                    GameManager.ShopCash.text = GameManager.Euros.ToString();
+                    GameManager.Cash.text = GameManager.Euros.ToString();
                 }
                 else
                 {
@@ -51,6 +57,9 @@ public class ShopButtons : MonoBehaviour
                 if (GameManager.Euros >= 200)
                 {
                     GameManager.SpawnerInventory.Add("Engineering");
+                    GameManager.Euros -= 200;
+                    GameManager.ShopCash.text = GameManager.Euros.ToString();
+                    GameManager.Cash.text = GameManager.Euros.ToString();
                 }
                 else
                 {
@@ -61,6 +70,9 @@ public class ShopButtons : MonoBehaviour
                 if (GameManager.Euros >= 200)
                 {
                     GameManager.SpawnerInventory.Add("Math");
+                    GameManager.Euros -= 200;
+                    GameManager.ShopCash.text = GameManager.Euros.ToString();
+                    GameManager.Cash.text = GameManager.Euros.ToString();
                 }
                 else
                 {
@@ -72,6 +84,9 @@ public class ShopButtons : MonoBehaviour
                 {
                     var randint = Random.RandomRange(0, 6);
                     GameManager.SpawnerInventory.Add(TowerTypes[randint]);
+                    GameManager.Euros -= 100;
+                    GameManager.ShopCash.text = GameManager.Euros.ToString();
+                    GameManager.Cash.text = GameManager.Euros.ToString();
                 }
                 else
                 {
@@ -93,6 +108,9 @@ public class ShopButtons : MonoBehaviour
                         }
                         GameManager.healthBar.SetHealth(GameManager.HP);
                     }
+                    GameManager.Euros -= 400;
+                    GameManager.ShopCash.text = GameManager.Euros.ToString();
+                    GameManager.Cash.text = GameManager.Euros.ToString();
                 }
                 else
                 {

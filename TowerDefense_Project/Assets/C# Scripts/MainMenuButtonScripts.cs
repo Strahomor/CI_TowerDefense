@@ -11,6 +11,8 @@ public class MainMenuButtonScripts : MonoBehaviour
 
     public GameObject StartMenu;
     public GameObject OptionsMenu;
+    public GameObject HTPMenu;
+    public GameObject TypingsMenu;
 
     public string buttonName;
 
@@ -18,6 +20,8 @@ public class MainMenuButtonScripts : MonoBehaviour
     {
         currentmenu = SMButtons.Start;
         OptionsMenu.SetActive(false);
+        HTPMenu.SetActive(false);
+        TypingsMenu.SetActive(false);
         StartMenu.SetActive(true);
     }
 
@@ -47,6 +51,8 @@ public class MainMenuButtonScripts : MonoBehaviour
                 currentmenu = SMButtons.Start;
                 StartMenu.SetActive(true);
                 OptionsMenu.SetActive(false);
+                TypingsMenu.SetActive(false);
+                HTPMenu.SetActive(false);
                 break;
             case "ResButton2560":
                 Screen.SetResolution(2560, 1440, true);
@@ -63,6 +69,14 @@ public class MainMenuButtonScripts : MonoBehaviour
             case "Fullscreen Button":
                 Debug.Log("Changed screen size");
                 Screen.fullScreen = !Screen.fullScreen;
+                break;
+            case "HTP Button":
+                StartMenu.SetActive(false);
+                HTPMenu.SetActive(true);
+                break;
+            case "Typings Button":
+                HTPMenu.SetActive(false);
+                TypingsMenu.SetActive(true);
                 break;
         }
     }

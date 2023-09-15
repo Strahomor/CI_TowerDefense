@@ -83,7 +83,7 @@ public class TowerController : MonoBehaviour
 
         sphcollider = gameObject.GetComponent<SphereCollider>();
         Targets = new List<GameObject>();
-        TagsToTarget = new List<string>() { "Science", "Math", "Engineering", "Technology" };
+        TagsToTarget = new List<string>() { "Science", "Math", "Engineering", "Tech" };
         Projectiles = new List<GameObject>();
 
         Object[] prefabscollection = Resources.LoadAll("Prefabs/Projectiles/");
@@ -95,7 +95,7 @@ public class TowerController : MonoBehaviour
     }
     void Update()
     {
-        tsinceattack += Time.deltaTime/4;
+        tsinceattack += Time.deltaTime/2.5f;
         if (xp >= xptreshhold)
         {
             LevelUp();

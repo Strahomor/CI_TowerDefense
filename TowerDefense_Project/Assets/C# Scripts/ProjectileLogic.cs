@@ -12,6 +12,7 @@ public class ProjectileLogic : MonoBehaviour
     private bool dmgd;
     private GameObject prev;
     public GameManager GameManager;
+    private string prevTag;
 
     // Start is called before the first frame update
     void Start()
@@ -26,16 +27,8 @@ public class ProjectileLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (this.transform.parent.GetComponent<TowerController>().Targets[0] == null)
-        {
-            this.transform.parent.GetComponent<TowerController>().Targets.RemoveAt(0);
-            Destroy(gameObject);
-        }
+        
         transform.Rotate(0, 1, 0);
-        //if ((this.transform.parent.GetComponent<TowerController>().Targets[0] != prev) && (first != true))
-        //{
-        //    Destroy(this);
-        //}
         
         var step = speed * Time.deltaTime;
         
@@ -46,39 +39,61 @@ public class ProjectileLogic : MonoBehaviour
         }
         else if (this.transform.parent.GetComponent<TowerController>().Targets.Count != 0)
         {
+            while ((transform.parent.GetComponent<TowerController>().Targets[0] == null) && (transform.parent.GetComponent<TowerController>().Targets.Count != 0))
+            {
+                this.transform.parent.GetComponent<TowerController>().Targets.RemoveAt(0);
+            }
             prev = this.transform.parent.GetComponent<TowerController>().Targets[0];
-            Target = this.transform.parent.GetComponent<TowerController>().Targets[0].transform.position;
+            if(this.transform.parent.GetComponent<TowerController>().Targets[0] != null)
+            {
+                Target = this.transform.parent.GetComponent<TowerController>().Targets[0].transform.position;
+            }
+            
         }
 
         transform.position = Vector3.MoveTowards(transform.position, Target, step);
 
         if (Vector3.Distance(transform.position, Target) < 0.001f)
         {
-            this.transform.parent.GetComponent<TowerController>().Targets[0].GetComponent<EnemyController>().enemyhp -= dmg;
-            Debug.Log(this.transform.parent.GetComponent<TowerController>().Targets[0].GetComponent<EnemyController>().enemyhp);
-            if (this.transform.parent.GetComponent<TowerController>().Targets[0].GetComponent<EnemyController>().enemyhp <= 0)
+            if (this.transform.parent.GetComponent<TowerController>().Targets[0] != null)
             {
-                this.transform.parent.GetComponent<TowerController>().xp += 0.5f;
-                prev = this.transform.parent.GetComponent<TowerController>().Targets[0];
-                Destroy(this.transform.parent.GetComponent<TowerController>().Targets[0]);
-                //Debug.Log(Targets[0].name);
-                ded = true;
+                this.transform.parent.GetComponent<TowerController>().Targets[0].GetComponent<EnemyController>().enemyhp -= dmg;
+                Debug.Log(this.transform.parent.GetComponent<TowerController>().Targets[0].GetComponent<EnemyController>().enemyhp);
+                if (this.transform.parent.GetComponent<TowerController>().Targets[0].GetComponent<EnemyController>().enemyhp <= 0)
+                {
+                    this.transform.parent.GetComponent<TowerController>().xp += 0.5f;
+                    prev = this.transform.parent.GetComponent<TowerController>().Targets[0];
+                    prevTag = prev.tag;
+                    this.transform.parent.GetComponent<TowerController>().Targets.RemoveAt(0);
+                    Destroy(prev);
+                    //Debug.Log(Targets[0].name);
+                    ded = true;
+                }
+                else
+                {
+                    dmgd = true;
+                }
             }
-            else
-            {
-                dmgd = true;
-            }
+            
             
             
             
         }
         if (ded)
         {
-            CashIn(this.transform.parent.GetComponent<TowerController>().Targets[0].tag);
+            CashIn(prevTag);
             GameManager.Cash.text = GameManager.Euros.ToString();
             GameManager.ShopCash.text = GameManager.Euros.ToString();
-            this.transform.parent.GetComponent<TowerController>().Targets.RemoveAt(0);
+            //this.transform.parent.GetComponent<TowerController>().Targets.RemoveAt(0);
             ded = false;
+            //if (this.transform.parent.GetComponent<TowerController>().Targets.Count != 0)
+            //{
+            //    Target = this.transform.parent.GetComponent<TowerController>().Targets[0].transform.position;
+            //}
+            //else
+            //{
+
+            //}
             GameManager.transform.GetComponent<GameManager>().Score += 10;
             GameManager.EnemiesKilled += 1;
             GameManager.EnemiesLeft.text = (GameManager.TotalSpawns - GameManager.EnemiesKilled).ToString();

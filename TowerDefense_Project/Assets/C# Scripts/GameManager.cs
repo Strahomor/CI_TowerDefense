@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text InvM;
     public TMP_Text ScoreVal;
     public TMP_Text WaveNum;
+    public TMP_Text SongName;
     public enum UIStates { Main, Shop, Pause, Ded};
     public UIStates currentstate;
 
@@ -269,6 +270,7 @@ public class GameManager : MonoBehaviour
                 break;
             case 1:
                 enemyclone.tag = "Tech";
+                enemyclone.transform.position = new Vector3(enemyclone.transform.position.x, -40f, enemyclone.transform.position.z);
                 break;
             case 2:
                 enemyclone.tag = "Engineering";
@@ -561,6 +563,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         currentstate = UIStates.Ded;
         MainUIPanel.SetActive(false);
+        PauseUI.SetActive(false);
         DedUI.SetActive(true);
     }
 }

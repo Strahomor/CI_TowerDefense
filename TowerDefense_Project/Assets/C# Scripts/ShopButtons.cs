@@ -93,6 +93,15 @@ public class ShopButtons : MonoBehaviour
                     Debug.LogWarning("BROKE");
                 }
                 break;
+            case "NukeButton":
+                if (GameManager.Euros >= 5000)
+                {
+                    GameManager.Nukeable = true;
+                    GameManager.Euros -= 5000;
+                    GameManager.ShopCash.text = GameManager.Euros.ToString();
+                    GameManager.Cash.text = GameManager.Euros.ToString();
+                }
+                break;
             case "HP Refill":
                 if (GameManager.Euros >= 400)
                 {

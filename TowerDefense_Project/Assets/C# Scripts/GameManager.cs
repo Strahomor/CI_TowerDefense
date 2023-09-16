@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     public double SpawnTimeDelay;
     private bool RoundOngoing;
     private bool SkipWait;
+    public bool Nukeable;
+    public bool NukeIncoming;
     private Vector3 ObjectDump = new Vector3(999.0f, 999.0f, 999.0f);
 
     public HealthBarLogic healthBar;
@@ -64,6 +66,11 @@ public class GameManager : MonoBehaviour
     public GameObject ShopUIPanel;
     public GameObject PauseUI;
     public GameObject DedUI;
+    public GameObject NukePanel;
+    public GameObject NukeButton;
+    public GameObject NukeTimer;
+
+    public GameObject audioManager;
 
     public ProtoPlayerController Player;
 
@@ -71,11 +78,12 @@ public class GameManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    { 
+    {
         //currentstate = UIStates.Main;
         PauseUI.SetActive(false);
         ShopUIPanel.SetActive(false);
         DedUI.SetActive(false);
+        NukeButton.SetActive(false);
         MainUIPanel.SetActive(true);
         for (int i = 0; i <= 3; i++)
         {
@@ -87,6 +95,9 @@ public class GameManager : MonoBehaviour
         InvM.gameObject.SetActive(false);
         SkipWait = false;
         RoundOngoing = false;
+        Nukeable = false;
+        NukeIncoming = false;
+        NukeTimer.SetActive(false);
         PreRoundTimer = 30;
         CenterMessage.gameObject.SetActive(true);
         BottomRightMessage.gameObject.SetActive(true);
@@ -163,6 +174,14 @@ public class GameManager : MonoBehaviour
             }
             PreRound();
             //WaveChange(); 
+        }
+
+        if (((Input.GetKeyDown(KeyCode.N))&& (Nukeable)))
+        {
+            NukeIncoming = true;
+            audioManager.GetComponent<BGMController>().SoundAlarm = false;
+            NukeTimer.SetActive(true);
+
         }
 
         if ((Input.GetKeyDown(KeyCode.K) && (!RoundOngoing)))
@@ -436,6 +455,11 @@ public class GameManager : MonoBehaviour
         currentstate = UIStates.Main;
         EnemiesLeft.text = TotalSpawns.ToString();
         BottomRightMessage.text = "Press E to enter build mode!";
+
+        if (WaveCounter == 4)
+        {
+            NukeButton.SetActive(true);
+        }
         Debug.Log("WaveChanged");
     }
 

@@ -75,11 +75,13 @@ public class GameManager : MonoBehaviour
     public ProtoPlayerController Player;
 
     private string RoundMessage = "Next round in: ";
-
+    private List<int> DevModeCode;
+    private List<int> DevModeCodeSolution;// = { 8, 8, 5, 5, 7, 9, 7, 9 };
     // Start is called before the first frame update
     void Start()
     {
         //currentstate = UIStates.Main;
+        Time.timeScale = 1;
         PauseUI.SetActive(false);
         ShopUIPanel.SetActive(false);
         DedUI.SetActive(false);
@@ -136,7 +138,15 @@ public class GameManager : MonoBehaviour
         {
             FullScreenMode.text = "Off";
         }
-        
+        DevModeCodeSolution.Add(8);
+        DevModeCodeSolution.Add(8);
+        DevModeCodeSolution.Add(5);
+        DevModeCodeSolution.Add(5);
+        DevModeCodeSolution.Add(7);
+        DevModeCodeSolution.Add(9);
+        DevModeCodeSolution.Add(7);
+        DevModeCodeSolution.Add(9);
+
     }
 
     private void FixedUpdate()

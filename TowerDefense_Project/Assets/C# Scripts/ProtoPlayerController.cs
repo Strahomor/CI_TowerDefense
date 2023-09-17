@@ -25,6 +25,8 @@ public class ProtoPlayerController : MonoBehaviour
     private bool Collided = false;
     private bool Exited = false;
     private bool BuildMode = false;
+    public bool Buildable;
+    public bool IsMoving;
     private int counter = 0;
 
     private int Selected;
@@ -54,12 +56,16 @@ public class ProtoPlayerController : MonoBehaviour
     public GameManager GameManager;
     Animator animator;
 
+    public GameObject RaycastCube;
+    public RaycastHit hit;
+
     //List<GameObject> TowerSpawner = new List<GameObject>();
 
 
     // Start is called before the first frame update
     void Start()
     {
+        RaycastCube.SetActive(false);
         n_rigidbody = GetComponent<Rigidbody>();
         //for (int i = 0; i<=GameManager.Towers.Count-1; i++)
         //{
@@ -178,6 +184,7 @@ public class ProtoPlayerController : MonoBehaviour
             BuildMode = !(BuildMode);
             if (BuildMode)
             {
+                RaycastCube.SetActive(true);
                 GameManager.InvS.gameObject.SetActive(true);
                 GameManager.InvT.gameObject.SetActive(true);
                 GameManager.InvE.gameObject.SetActive(true);
@@ -209,6 +216,7 @@ public class ProtoPlayerController : MonoBehaviour
             }
             else
             {
+                RaycastCube.SetActive(false);
                 GameManager.InvS.gameObject.SetActive(false);
                 GameManager.InvT.gameObject.SetActive(false);
                 GameManager.InvE.gameObject.SetActive(false);
@@ -224,12 +232,16 @@ public class ProtoPlayerController : MonoBehaviour
             //GameManager.BottomRightMessage.text = "Press 1,2,3,4 for S,T,E,M";
         }
 
-        if (Input.GetKey(KeyCode.A)) { animator.SetBool("isTurningL", true); }
-        else if (Input.GetKey(KeyCode.D)) { animator.SetBool("isTurningR", true); }
-        else if (Input.GetKey(KeyCode.Space)) { animator.SetBool("isRising", true); }
+        if (Input.GetKey(KeyCode.A)) { animator.SetBool("isTurningL", true); IsMoving = true; }
+        else if (Input.GetKey(KeyCode.D)) { animator.SetBool("isTurningR", true); IsMoving = true; }
+        else if (Input.GetKey(KeyCode.W)) { IsMoving = true; }
+        else if (Input.GetKey(KeyCode.S)) { IsMoving = true; }
+        else if (Input.GetKey(KeyCode.Space)) { animator.SetBool("isRising", true);  }
 
-        if (Input.GetKeyUp(KeyCode.A)) { animator.SetBool("isTurningL", false); }
-        else if (Input.GetKeyUp(KeyCode.D)) { animator.SetBool("isTurningR", false); }
+        if (Input.GetKeyUp(KeyCode.A)) { animator.SetBool("isTurningL", false); IsMoving = false; }
+        else if (Input.GetKeyUp(KeyCode.W)) { IsMoving = false; }
+        else if (Input.GetKeyUp(KeyCode.S)) { IsMoving = false; }
+        else if (Input.GetKeyUp(KeyCode.D)) { animator.SetBool("isTurningR", false); IsMoving = false; }
         else if (Input.GetKeyUp(KeyCode.Space)) { animator.SetBool("isRising", false); }
 
 
@@ -253,13 +265,14 @@ public class ProtoPlayerController : MonoBehaviour
         {
             
             Vector3 up = transform.TransformDirection(Vector3.up);
-            RaycastHit hit;
+            //RaycastHit hit;
             Ray ray = new Ray(transform.position, -(transform.up));
             if (Physics.Raycast(ray, out hit))
             {
                 Vector3 TowerPos = new Vector3(hit.point.x + 20.0f, hit.point.y, hit.point.z);
                 if (hit.point.y <=20.0f)
                 {
+                    Buildable = true;
                     //Debug.Log("Buildable area");
                     if (Input.GetKeyDown(KeyCode.Alpha1))
                     {
@@ -289,7 +302,7 @@ public class ProtoPlayerController : MonoBehaviour
                 }
                 else
                 {
-
+                    Buildable = false;
                     //Debug.Log("Area not usable");
                 }
             }

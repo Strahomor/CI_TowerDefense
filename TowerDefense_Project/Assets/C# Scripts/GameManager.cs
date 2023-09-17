@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     private bool SkipWait;
     public bool Nukeable;
     public bool NukeIncoming;
+    private bool devMode;
     private Vector3 ObjectDump = new Vector3(999.0f, 999.0f, 999.0f);
 
     public HealthBarLogic healthBar;
@@ -58,6 +59,8 @@ public class GameManager : MonoBehaviour
     public TMP_Text InvM;
     public TMP_Text ScoreVal;
     public TMP_Text WaveNum;
+    public TMP_Text NukeScoreVal;
+    public TMP_Text NukeWaveNum;
     public TMP_Text SongName;
     public enum UIStates { Main, Shop, Pause, Ded};
     public UIStates currentstate;
@@ -66,17 +69,22 @@ public class GameManager : MonoBehaviour
     public GameObject ShopUIPanel;
     public GameObject PauseUI;
     public GameObject DedUI;
+    public GameObject NukeWinPanel;
+    public GameObject DeathPanel;
     public GameObject NukePanel;
     public GameObject NukeButton;
     public GameObject NukeTimer;
 
     public GameObject audioManager;
+    public GameObject NukeSprite;
 
     public ProtoPlayerController Player;
+    public GameObject bgm;
+    public BGMController bGM;
 
     private string RoundMessage = "Next round in: ";
-    private List<int> DevModeCode;
-    private List<int> DevModeCodeSolution;// = { 8, 8, 5, 5, 7, 9, 7, 9 };
+    private List<int> DevModeCode = new List<int>();
+    private List<int> DevModeCodeSolution = new List<int>();// = { 8, 8, 5, 5, 7, 9, 7, 9 };
     // Start is called before the first frame update
     void Start()
     {
@@ -87,6 +95,10 @@ public class GameManager : MonoBehaviour
         DedUI.SetActive(false);
         NukeButton.SetActive(false);
         MainUIPanel.SetActive(true);
+        NukeSprite.SetActive(false);
+        DeathPanel.SetActive(false);
+        NukeWinPanel.SetActive(false);
+        NukePanel.SetActive(false);
         for (int i = 0; i <= 3; i++)
         {
             SpawnerInventory.Add("blank");
@@ -159,6 +171,40 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if ((Input.anyKey) && (!devMode))
+        {
+            if ((Input.GetKeyDown(KeyCode.Keypad5)) || (Input.GetKeyDown(KeyCode.Alpha5)))
+            {
+                DevModeCode.Add(5);
+            }
+            else if ((Input.GetKeyDown(KeyCode.Keypad7)) || (Input.GetKeyDown(KeyCode.Alpha7)))
+            {
+                DevModeCode.Add(7);
+            }
+            else if ((Input.GetKeyDown(KeyCode.Keypad8)) || (Input.GetKeyDown(KeyCode.Alpha8)))
+            {
+                DevModeCode.Add(8);
+            }
+            else if ((Input.GetKeyDown(KeyCode.Keypad9)) || (Input.GetKeyDown(KeyCode.Alpha9)))
+            {
+                DevModeCode.Add(9);
+            }
+            for (int i = 0; i<DevModeCode.Count; i++)
+            {
+                if (DevModeCode[i] != DevModeCodeSolution[i])
+                {
+                    DevModeCode.RemoveRange(0, DevModeCode.Count - 1);
+                }
+                else if (DevModeCode[i] == DevModeCodeSolution[i])
+                {
+                    if (i == DevModeCodeSolution.Count - 1)
+                    {
+                        DevMode();
+                    }
+                }
+            }
+
+        }
         if (HP<= 0)
         {
             Ded();
@@ -185,9 +231,13 @@ public class GameManager : MonoBehaviour
             PreRound();
             //WaveChange(); 
         }
-
-        if (((Input.GetKeyDown(KeyCode.N))&& (Nukeable)))
+        if ((Nukeable) && (!NukeSprite.activeSelf) && (!NukeIncoming))
         {
+            NukeSprite.SetActive(true);
+        }
+        if (((Input.GetKeyDown(KeyCode.N)) && (Nukeable) && (!NukeIncoming)))
+        {
+            NukeSprite.SetActive(false);
             NukeIncoming = true;
             audioManager.GetComponent<BGMController>().SoundAlarm = false;
             NukeTimer.SetActive(true);
@@ -531,29 +581,6 @@ public class GameManager : MonoBehaviour
         
 
     }
-    //void ActivateCanvas()
-    //{
-    //    if (ShopOpened == true)
-    //    {
-    //        ShopUI.gameObject.SetActive(false);
-    //        InGameUI.gameObject.SetActive(true);
-    //        for (int i = 0; i<InGameUI.transform.childCount; i++)
-    //        {
-    //            InGameUI.transform.GetChild(i).gameObject.SetActive(true);
-    //        }
-    //        ShopOpened = false;
-    //    }
-    //    else if (ShopOpened == false)
-    //    {
-    //        ShopUI.gameObject.SetActive(true);
-    //        InGameUI.gameObject.SetActive(false);
-    //        for (int i = 0; i < ShopUI.transform.childCount; i++)
-    //        {
-    //            ShopUI.transform.GetChild(i).gameObject.SetActive(true);
-    //        }
-    //        ShopOpened = true;
-    //    }
-    //}
 
     void ActivatePanel()
     {
@@ -592,6 +619,9 @@ public class GameManager : MonoBehaviour
     }
     void Ded()
     {
+        NukeIncoming = false;
+        bGM.source.Stop();
+        bgm.SetActive(false);
         ScoreVal.text = Score.ToString();
         WaveNum.text = WaveCounter.ToString();
         Time.timeScale = 0;
@@ -599,5 +629,17 @@ public class GameManager : MonoBehaviour
         MainUIPanel.SetActive(false);
         PauseUI.SetActive(false);
         DedUI.SetActive(true);
+        DeathPanel.SetActive(true);
+    }
+
+    void DevMode()
+    {
+        Nukeable = true;
+        Euros = 2147483647;
+        Cash.text = Euros.ToString();
+        ShopCash.text = Euros.ToString();
+        NukeButton.SetActive(true);
+        devMode = true;
+        Debug.Log("DevMode Enabled");
     }
 }

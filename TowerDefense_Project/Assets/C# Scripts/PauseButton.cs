@@ -9,6 +9,7 @@ public class PauseButton : MonoBehaviour
 {
     public GameManager GameManager;
     public string buttonName;
+    public BGMController bGM;
 
     public void PauseButtonPress()
     {
@@ -23,6 +24,7 @@ public class PauseButton : MonoBehaviour
             case "RestartButton":
                 Debug.Log("Restart");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                GameManager.PauseUI.SetActive(false);
                 GameManager.ZaWarudo();
                 break;
             case "QuitButton":

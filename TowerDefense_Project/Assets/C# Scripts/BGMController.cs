@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class BGMController : MonoBehaviour
@@ -18,12 +19,19 @@ public class BGMController : MonoBehaviour
 
     public bool SoundAlarm;
     public bool Exploded;
+    public bool LaunchConfirmed;
 
+    public float TimeElapsed;
+    public float targetAlpha;
+    public float FadeRate;
+    public Image image;
     public double RemainingAlarmTime;
 
     // Start is called before the first frame update
     void Start()
     {
+        TimeElapsed = 5f;
+        FadeRate = 3.5f;
         Exploded = false;
         gameManager = FindObjectOfType<GameManager>();
         DiskotekaLength = AllSongs.Count;
@@ -43,7 +51,7 @@ public class BGMController : MonoBehaviour
         {
             SwapBGMTrack();
         }
-        else if (gameManager.NukeIncoming)
+        else if (gameManager.NukeIncoming) 
         {
             Nuke();
         }
@@ -78,6 +86,7 @@ public class BGMController : MonoBehaviour
 
     public void Nuke()
     {
+        
         if ((SoundAlarm == false) && (source.isPlaying == true)) {
             source.Stop();
             source.PlayOneShot(NukeCountdown);
@@ -97,18 +106,39 @@ public class BGMController : MonoBehaviour
                 Exploded = true;
 
             }
+            else if (((source.isPlaying == true) && (SoundAlarm) && (Exploded)))
+            {
+                TimeElapsed += Time.deltaTime;
+                if ((NukeSplosion.length - TimeElapsed) <= 5)
+                {
+                    StartCoroutine(FadeIn());
+                    //nukeFlash.FlashBrightness.value = NukeSplosion.length - TimeElapsed;
+                }
+            }
             else if (((source.isPlaying == false) && (SoundAlarm) && (Exploded)))
             {
                 gameManager.NukePanel.SetActive(false);
                 gameManager.DedUI.SetActive(true);
+                gameManager.NukeWinPanel.SetActive(true);
                 gameManager.Score += 50000;
-                gameManager.ScoreVal.text = gameManager.Score.ToString();
-                gameManager.WaveNum.text = gameManager.WaveCounter.ToString();
+                gameManager.NukeScoreVal.text = gameManager.Score.ToString();
+                gameManager.NukeWaveNum.text = gameManager.WaveCounter.ToString();
                 Time.timeScale = 0;
                 SoundAlarm = false;
             }
             
         }
         
+    }
+    IEnumerator FadeIn()
+    {
+        targetAlpha = 0f;
+        Color curColor = image.color;
+        while (Mathf.Abs(curColor.a - targetAlpha) > 0.0f)
+        {
+            curColor.a = Mathf.Lerp(curColor.a, targetAlpha, FadeRate * Time.deltaTime/3);
+            image.color = curColor;
+            yield return null;
+        }
     }
 }
